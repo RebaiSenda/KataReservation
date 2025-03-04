@@ -6,7 +6,7 @@ namespace KataReservation.Tests.Domain.Models;
 public class BookingTests
 {
     [Fact]
-    public void Shoud_Create_Value()
+    public void Shoud_Create_Booking()
     {
         const int id = 100;
         const int idRoom = 100;
