@@ -7,18 +7,18 @@ using Microsoft.AspNetCore.Mvc;
 namespace KataReservation.Api.Controllers;
 
 [Authorize("KataReservationApiPolicy")]
-[Route("api/values")]
+[Route("api/booking")]
 [ApiController]
 public class BookingController(IBookingService bookingService, ILogger<BookingController> logger) : ControllerBase
 {
     [HttpGet]
-    [EndpointDescription("Get values")]
+    [EndpointDescription("Get Booking")]
     [Produces("application/json")]
     [ProducesResponseType(typeof(BookingsResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult<BookingsResponse>> GetBookingsAsync()
     {
-        logger.Log(LogLevel.Information, "Get values called");
+        logger.Log(LogLevel.Information, "Get Booking called");
 
         var values = await bookingService.GetValuesAsync();
         return Ok(new BookingsResponse(values));
@@ -26,7 +26,7 @@ public class BookingController(IBookingService bookingService, ILogger<BookingCo
 
     [HttpGet]
     [Route("{id}")]
-    [EndpointDescription("Get value by id")]
+    [EndpointDescription("Get Booking by id")]
     [Produces("application/json")]
     [ProducesResponseType(typeof(BookingResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
