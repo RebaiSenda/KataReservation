@@ -1,0 +1,42 @@
+@KataReservation.Api_HostAddress = https://localhost:5002
+@Access_Token = eyJhbGciOiJSUzI1NiIsImtpZCI6IjY3NDFENTM2MDFGMThDMzc1NTNDODVBMzI2RDNGMUQwIiwidHlwIjoiYXQrand0In0.eyJpc3MiOiJodHRwczovL2xvY2FsaG9zdDo1MDAxIiwibmJmIjoxNzM4MTA1NTg2LCJpYXQiOjE3MzgxMDU1ODYsImV4cCI6MTczODEwOTE4NiwiYXVkIjoiaHR0cHM6Ly9sb2NhbGhvc3Q6NTAwMS9yZXNvdXJjZXMiLCJzY29wZSI6WyJTYW1wbGUuQXBpIl0sImNsaWVudF9pZCI6ImNsaWVudCIsImp0aSI6IjU0NzE0RDhFRkYyMThGNDREMUUxN0MyQzNERUM2QTQzIn0.xrMkucfRqV7BEf4foTFfMIPbQn3n7e6mMqcvPqKbel_xPlfKfS5PZcmCkxMfRa0sPl7FD5N4aw5wYh6Drnr6xXyWfCqDz8AbdENtF0ed17YV_lMNV-uFfe3TklxCQBn4gsLZYiV2IhHMEaH9E2AmpVwNFQs_0q600NdoyGfRKKwEWDR-jXO54gPs_hotAi4YUriIwgvuHHJneYQIk6hdASy-cs5Yd1cGvUkhriwJQuZb2oPwqVMx1HGVJ2sFOG2epSAymg-nA3h4jhUtwz5fmKn6F9b7bkn-8Riy-g18PNsiMDaB6sFHhgqzg-2uIlPufbv_1OmZRCPiOb5mY1I1yg
+
+GET {{KataReservation.Api_HostAddress}}/api/values
+Accept: application/json
+Authorization: Bearer {{Access_Token}}
+
+###
+
+GET {{KataReservation.Api_HostAddress}}/api/values/100
+Accept: application/json
+Authorization: Bearer {{Access_Token}}
+
+###
+
+POST {{KataReservation.Api_HostAddress}}/api/values
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{Access_Token}}
+
+{
+    "id": 103,
+    "name": "Fake 103"
+}
+
+###
+
+PUT {{KataReservation.Api_HostAddress}}/api/values/103
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{Access_Token}}
+
+{
+    "name": "Fake 104"
+}
+
+###
+
+DELETE {{KataReservation.Api_HostAddress}}/api/values/103
+Authorization: Bearer {{Access_Token}}
+
+###
