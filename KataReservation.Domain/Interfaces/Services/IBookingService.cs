@@ -4,9 +4,9 @@ namespace KataReservation.Domain.Interfaces.Services;
 
 public interface IBookingService
 {
-    Task<IEnumerable<BookingServiceDto>> GetValuesAsync();
-    Task<BookingServiceDto?> GetValueByIdAsync(int id);
-    Task<BookingServiceDto> CreateValueAsync(BookingServiceDto value);
-    Task<BookingServiceDto?> UpdateValueAsync(BookingServiceDto value);
-    Task<bool> DeleteValueAsync(int id);
+    Task<IEnumerable<BookingServiceDto>> GetBookingsAsync();
+    Task<BookingServiceDto?> GetBookingByIdAsync(int id);
+    Task<BookingServiceDto> CreateBookingAsync(BookingServiceDto booking);
+    Task<BookingServiceDto?> UpdateBookingAsync(BookingServiceDto booking);
+    Task<bool> DeleteBookingAsync(int id);
 }

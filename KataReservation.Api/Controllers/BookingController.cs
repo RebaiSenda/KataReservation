@@ -20,7 +20,7 @@ public class BookingController(IBookingService bookingService, ILogger<BookingCo
     {
         logger.Log(LogLevel.Information, "Get Booking called");
 
-        var values = await bookingService.GetValuesAsync();
+        var values = await bookingService.GetBookingsAsync();
         return Ok(new BookingsResponse(values));
     }
 
@@ -33,7 +33,7 @@ public class BookingController(IBookingService bookingService, ILogger<BookingCo
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult<BookingResponse>> GetBookingByIdAsync([FromRoute] int id)
     {
-        var value = await bookingService.GetValueByIdAsync(id);
+        var value = await bookingService.GetBookingByIdAsync(id);
 
         if (value is null)
         {
@@ -56,7 +56,7 @@ public class BookingController(IBookingService bookingService, ILogger<BookingCo
             return BadRequest();
         }
 
-        var booking = await bookingService.CreateValueAsync(request.ToModel());
+        var booking = await bookingService.CreateBookingAsync(request.ToModel());
         return CreatedAtAction(nameof(GetBookingByIdAsync), new { booking.Id }, booking);
     }
 
@@ -67,14 +67,14 @@ public class BookingController(IBookingService bookingService, ILogger<BookingCo
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<ActionResult<BookingResponse>> UpdateValueAsync([FromRoute] int id, [FromBody] UpdateBookingRequest request)
+    public async Task<ActionResult<BookingResponse>> UpdateBookingAsync([FromRoute] int id, [FromBody] UpdateBookingRequest request)
     {
         if (!ModelState.IsValid)
         {
             return BadRequest();
         }
 
-        var value = await bookingService.UpdateValueAsync(request.ToModel(id));
+        var value = await bookingService.UpdateBookingAsync(request.ToModel(id));
 
         if (value is null)
         {
@@ -89,9 +89,9 @@ public class BookingController(IBookingService bookingService, ILogger<BookingCo
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<IActionResult> DeleteValueAsync([FromRoute] int id)
+    public async Task<IActionResult> DeleteBookingAsync([FromRoute] int id)
     {
-        var isDeleted = await bookingService.DeleteValueAsync(id);
+        var isDeleted = await bookingService.DeleteBookingAsync(id);
 
         if (!isDeleted)
         {

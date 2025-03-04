@@ -28,7 +28,7 @@ public class BookingRepository : IBookingRepository
         }
     ];
 
-    public async Task<BookingRepositoryDto?> GetValueByIdAsync(int id)
+    public async Task<BookingRepositoryDto?> GetBookingByIdAsync(int id)
     {
         var entity = await Task.FromResult(Values.SingleOrDefault(v => v.Id == id));
 
@@ -40,14 +40,14 @@ public class BookingRepository : IBookingRepository
         return new BookingRepositoryDto(entity.Id, entity.RoomId,entity.PersonId,entity.BookingDate,entity.StartSlot,entity.EndSlot);
     }
 
-    public async Task<IEnumerable<BookingRepositoryDto>> GetValuesAsync()
+    public async Task<IEnumerable<BookingRepositoryDto>> GetBookingsAsync()
     {
         var values = await Task.FromResult(Values);
 
         return values.Select(v => new BookingRepositoryDto(v.Id, v.RoomId, v.PersonId, v.BookingDate, v.StartSlot, v.EndSlot));
     }
 
-    public async Task<BookingRepositoryDto> CreateValueAsync(BookingRepositoryDto value)
+    public async Task<BookingRepositoryDto> CreateBookingAsync(BookingRepositoryDto value)
     {
         await Task.Run(() => Values.Add(new BookingEntity
         {
@@ -61,7 +61,7 @@ public class BookingRepository : IBookingRepository
         return value;
     }
 
-    public async Task<BookingRepositoryDto?> UpdateValueAsync(BookingRepositoryDto value)
+    public async Task<BookingRepositoryDto?> UpdateBookingAsync(BookingRepositoryDto value)
     {
         var entity = await Task.Run(() =>
         {
@@ -88,7 +88,7 @@ public class BookingRepository : IBookingRepository
         return new BookingRepositoryDto(value.Id, value.RoomId, value.PersonId, value.BookingDate, value.StartSlot, value.EndSlot);
     }
 
-    public async Task<bool> DeleteValueAsync(int id) =>
+    public async Task<bool> DeleteBookingAsync(int id) =>
         await Task.Run(() =>
         {
             var entity = Values.SingleOrDefault(v => v.Id == id);

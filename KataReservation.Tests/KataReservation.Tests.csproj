@@ -28,6 +28,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\KataReservation.Api\KataReservation.Api.csproj" />
+    <ProjectReference Include="..\KataReservation.Dal\KataReservation.Dal.csproj" />
     <ProjectReference Include="..\KataReservation.Domain\KataReservation.Domain.csproj" />
   </ItemGroup>
 

@@ -8,48 +8,48 @@ namespace KataReservation.Domain.Services;
 
 public class BookingService(IBookingRepository bookingRepository) : IBookingService
 {
-    public async Task<IEnumerable<BookingServiceDto>> GetValuesAsync()
+    public async Task<IEnumerable<BookingServiceDto>> GetBookingsAsync()
     {
-        var valuesDtos = await bookingRepository.GetValuesAsync();
-        var values = valuesDtos.Select(v => new Booking(v.Id, v.RoomId, v.PersonId, v.BookingDate, v.StartSlot, v.EndSlot));
-        return values.Select(v => new BookingServiceDto(v));
+        var BookingsDtos = await bookingRepository.GetBookingsAsync();
+        var Bookings = BookingsDtos.Select(v => new Booking(v.Id, v.RoomId, v.PersonId, v.BookingDate, v.StartSlot, v.EndSlot));
+        return Bookings.Select(v => new BookingServiceDto(v));
     }
 
-    public async Task<BookingServiceDto?> GetValueByIdAsync(int id)
+    public async Task<BookingServiceDto?> GetBookingByIdAsync(int id)
     {
-        var valueDto = await bookingRepository.GetValueByIdAsync(id);
+        var BookingDto = await bookingRepository.GetBookingByIdAsync(id);
 
-        if (valueDto is null)
+        if (BookingDto is null)
         {
             return null;
         }
         
-        var value = new Booking(valueDto.Id, valueDto.RoomId, valueDto.PersonId, valueDto.BookingDate, valueDto.StartSlot, valueDto.EndSlot);
-        return new BookingServiceDto(value);
+        var Booking = new Booking(BookingDto.Id, BookingDto.RoomId, BookingDto.PersonId, BookingDto.BookingDate, BookingDto.StartSlot, BookingDto.EndSlot);
+        return new BookingServiceDto(Booking);
     }
 
-    public async Task<BookingServiceDto> CreateValueAsync(BookingServiceDto valueServiceDto)
+    public async Task<BookingServiceDto> CreateBookingAsync(BookingServiceDto BookingServiceDto)
     {
-        var valueRepositoryDto = new BookingRepositoryDto(valueServiceDto);
-        var valueDto = await bookingRepository.CreateValueAsync(valueRepositoryDto);
-        var value = new Booking(valueDto.Id, valueDto.RoomId, valueDto.PersonId, valueDto.BookingDate, valueDto.StartSlot, valueDto.EndSlot);
-        return new BookingServiceDto(value);
+        var BookingRepositoryDto = new BookingRepositoryDto(BookingServiceDto);
+        var BookingDto = await bookingRepository.CreateBookingAsync(BookingRepositoryDto);
+        var Booking = new Booking(BookingDto.Id, BookingDto.RoomId, BookingDto.PersonId, BookingDto.BookingDate, BookingDto.StartSlot, BookingDto.EndSlot);
+        return new BookingServiceDto(Booking);
     }
 
-    public async Task<BookingServiceDto?> UpdateValueAsync(BookingServiceDto valueServiceDto)
+    public async Task<BookingServiceDto?> UpdateBookingAsync(BookingServiceDto BookingServiceDto)
     {
-        var valueRepositoryDto = new BookingRepositoryDto(valueServiceDto);
-        var valueDto = await bookingRepository.UpdateValueAsync(valueRepositoryDto);
+        var BookingRepositoryDto = new BookingRepositoryDto(BookingServiceDto);
+        var BookingDto = await bookingRepository.UpdateBookingAsync(BookingRepositoryDto);
         
-        if (valueDto is null)
+        if (BookingDto is null)
         {
             return null;
         }
 
-        var value = new Booking(valueDto.Id, valueDto.RoomId, valueDto.PersonId, valueDto.BookingDate, valueDto.StartSlot, valueDto.EndSlot);
-        return new BookingServiceDto(value);
+        var Booking = new Booking(BookingDto.Id, BookingDto.RoomId, BookingDto.PersonId, BookingDto.BookingDate, BookingDto.StartSlot, BookingDto.EndSlot);
+        return new BookingServiceDto(Booking);
     }
 
-    public async Task<bool> DeleteValueAsync(int id) =>
-        await bookingRepository.DeleteValueAsync(id);
+    public async Task<bool> DeleteBookingAsync(int id) =>
+        await bookingRepository.DeleteBookingAsync(id);
 }
