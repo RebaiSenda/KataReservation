@@ -57,26 +57,6 @@ public class BookingServiceTests
     }
 
     [Theory, AutoData]
-    public async Task Shoud_Update_Value_When_Value_Exists(BookingServiceDto valueServiceDto, BookingRepositoryDto valueRepositoryDto)
-    {
-        _bookingRepository.UpdateBookingAsync(default!).ReturnsForAnyArgs(valueRepositoryDto);
-
-        var result = await _bookingService.UpdateBookingAsync(valueServiceDto);
-
-        Check.That(result).IsNotNull();
-    }
-
-    [Theory, AutoData]
-    public async Task Shoud_Not_Update_Value_And_Return_Value_When_Value_Doesnt_Exist(BookingServiceDto value)
-    {
-        _bookingRepository.UpdateBookingAsync(default!).ReturnsForAnyArgs((BookingRepositoryDto?)null);
-
-        var result = await _bookingService.UpdateBookingAsync(value);
-
-        Check.That(result).IsNull();
-    }
-
-    [Theory, AutoData]
     public async Task Shoud_Delete_Value(int id)
     {
         _bookingRepository.DeleteBookingAsync(id).Returns(true);

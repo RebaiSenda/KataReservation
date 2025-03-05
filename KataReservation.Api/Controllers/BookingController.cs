@@ -11,18 +11,6 @@ namespace KataReservation.Api.Controllers;
 [ApiController]
 public class BookingController(IBookingService bookingService, ILogger<BookingController> logger) : ControllerBase
 {
-    [HttpGet]
-    [EndpointDescription("Get Booking")]
-    [Produces("application/json")]
-    [ProducesResponseType(typeof(BookingsResponse), StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<ActionResult<BookingsResponse>> GetBookingsAsync()
-    {
-        logger.Log(LogLevel.Information, "Get Booking called");
-
-        var values = await bookingService.GetBookingsAsync();
-        return Ok(new BookingsResponse(values));
-    }
 
     [HttpGet]
     [Route("{id}")]
@@ -44,7 +32,7 @@ public class BookingController(IBookingService bookingService, ILogger<BookingCo
     }
 
     [HttpPost]
-    [EndpointDescription("Create a new Booking")]
+    [EndpointDescription("Créer des réservations")]
     [Consumes(typeof(CreateBookingRequest), "application/json")]
     [ProducesResponseType(typeof(BookingResponse), StatusCodes.Status201Created, "application/json")]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -60,32 +48,8 @@ public class BookingController(IBookingService bookingService, ILogger<BookingCo
         return CreatedAtAction(nameof(GetBookingByIdAsync), new { booking.Id }, booking);
     }
 
-    [HttpPut("{id}")]
-    [EndpointDescription("Update a booking by id")]
-    [Consumes(typeof(UpdateBookingRequest), "application/json")]
-    [ProducesResponseType(typeof(BookingResponse), StatusCodes.Status200OK, "application/json")]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<ActionResult<BookingResponse>> UpdateBookingAsync([FromRoute] int id, [FromBody] UpdateBookingRequest request)
-    {
-        if (!ModelState.IsValid)
-        {
-            return BadRequest();
-        }
-
-        var value = await bookingService.UpdateBookingAsync(request.ToModel(id));
-
-        if (value is null)
-        {
-            return NotFound();
-        }
-
-        return Ok(new BookingResponse(value));
-    }
-
     [HttpDelete("{id}")]
-    [EndpointDescription("Delete a booking by id")]
+    [EndpointDescription("Supprimer des réservations")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]

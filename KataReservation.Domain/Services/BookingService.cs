@@ -36,20 +36,6 @@ public class BookingService(IBookingRepository bookingRepository) : IBookingServ
         return new BookingServiceDto(Booking);
     }
 
-    public async Task<BookingServiceDto?> UpdateBookingAsync(BookingServiceDto BookingServiceDto)
-    {
-        var BookingRepositoryDto = new BookingRepositoryDto(BookingServiceDto);
-        var BookingDto = await bookingRepository.UpdateBookingAsync(BookingRepositoryDto);
-        
-        if (BookingDto is null)
-        {
-            return null;
-        }
-
-        var Booking = new Booking(BookingDto.Id, BookingDto.RoomId, BookingDto.PersonId, BookingDto.BookingDate, BookingDto.StartSlot, BookingDto.EndSlot);
-        return new BookingServiceDto(Booking);
-    }
-
     public async Task<bool> DeleteBookingAsync(int id) =>
         await bookingRepository.DeleteBookingAsync(id);
 }

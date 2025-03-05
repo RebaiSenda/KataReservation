@@ -12,7 +12,7 @@ namespace KataReservation.Api.Controllers;
 public class RoomController(IRoomService RoomService, ILogger<RoomController> logger) : ControllerBase
 {
     [HttpGet]
-    [EndpointDescription("Get Room")]
+    [EndpointDescription("Lister des salles")]
     [Produces("application/json")]
     [ProducesResponseType(typeof(RoomsResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]

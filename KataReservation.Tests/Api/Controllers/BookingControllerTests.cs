@@ -20,15 +20,6 @@ public class BookingControllerTests
     public BookingControllerTests() =>
         _BookingController = new BookingController(_bookingService, _logger);
 
-    [Theory, AutoData]
-    public async Task Should_Get_Bookings(IEnumerable<BookingServiceDto> Bookings)
-    {
-        _bookingService.GetBookingsAsync().Returns(Bookings);
-
-        var response = await _BookingController.GetBookingsAsync();
-
-        Check.That(response.Result).IsInstanceOf<OkObjectResult>();
-    }
 
     [Theory, AutoData]
     public async Task Should_Get_Booking_When_Booking_Exists(int id, BookingServiceDto Booking)
@@ -67,35 +58,6 @@ public class BookingControllerTests
         var response = await _BookingController.CreateBookingAsync(request);
 
         Check.That(response.Result).IsInstanceOf<BadRequestResult>();
-    }
-
-    [Theory, AutoData]
-    public async Task Should_Update_Booking(int id, UpdateBookingRequest request, BookingServiceDto Booking)
-    {
-        _bookingService.UpdateBookingAsync(default!).ReturnsForAnyArgs(Booking);
-
-        var response = await _BookingController.UpdateBookingAsync(id, request);
-
-        Check.That(response.Result).IsInstanceOf<OkObjectResult>();
-    }
-
-    [Theory, AutoData]
-    public async Task Should_Not_Update_Booking_And_Return_400_When_Bad_Request(int id)
-    {
-        var request = new UpdateBookingRequest(1,1,DateTime.Now,1,1);
-        _BookingController.ModelState.AddModelError(string.Empty, string.Empty);
-
-        var response = await _BookingController.UpdateBookingAsync(id, request);
-
-        Check.That(response.Result).IsInstanceOf<BadRequestResult>();
-    }
-
-    [Theory, AutoData]
-    public async Task Should_Not_Update_Booking_And_Return_404_When_Booking_Doesnt_Exist(int id, UpdateBookingRequest request)
-    {
-        var response = await _BookingController.UpdateBookingAsync(id, request);
-
-        Check.That(response.Result).IsInstanceOf<NotFoundResult>();
     }
 
     [Theory, AutoData]
