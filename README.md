@@ -1,4 +1,4 @@
-# Sample API
+# KataReservation API
 
 This project is a sample API REST in .NET 9.
 
