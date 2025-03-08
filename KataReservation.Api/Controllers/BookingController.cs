@@ -1,6 +1,8 @@
 ﻿using KataReservation.Api.Dtos.Requests;
 using KataReservation.Api.Dtos.Responses;
+using KataReservation.Domain.Dtos.Repositories;
 using KataReservation.Domain.Interfaces.Services;
+using KataReservation.Domain.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,56 +14,58 @@ namespace KataReservation.Api.Controllers;
 public class BookingController(IBookingService bookingService, ILogger<BookingController> logger) : ControllerBase
 {
 
-    [HttpGet]
-    [Route("{id}")]
-    [EndpointDescription("Get Booking by id")]
-    [Produces("application/json")]
-    [ProducesResponseType(typeof(BookingResponse), StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<ActionResult<BookingResponse>> GetBookingByIdAsync([FromRoute] int id)
-    {
-        var value = await bookingService.GetBookingByIdAsync(id);
+    //[HttpGet]
+    //[Route("{id}")]
+    //[EndpointDescription("Get Booking by id")]
+    //[Produces("application/json")]
+    //[ProducesResponseType(typeof(BookingResponse), StatusCodes.Status200OK)]
+    //[ProducesResponseType(StatusCodes.Status404NotFound)]
+    //[ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    //public async Task<ActionResult<BookingResponse>> GetBookingByIdAsync([FromRoute] int id)
+    //{
+    //    var value = await bookingService.GetBookingByIdAsync(id);
 
-        if (value is null)
-        {
-            return NotFound();
-        }
+    //    if (value is null)
+    //    {
+    //        return NotFound();
+    //    }
 
-        return Ok(new BookingResponse(value));
-    }
+    //    return Ok(new BookingResponse(value));
+    //}
+    /// <summary>
+    /// Récupère toutes les salles disponibles
+    /// </summary>
+    // [HttpPost]
+    //[EndpointDescription("Créer des réservations")]
+    //[Consumes(typeof(CreateBookingRequest), "application/json")]
+    //[ProducesResponseType(typeof(BookingResponse), StatusCodes.Status201Created, "application/json")]
+    //[ProducesResponseType(StatusCodes.Status400BadRequest)]
+    //[ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    //public async Task<ActionResult<BookingResponse>> CreateBookingAsync([FromBody] CreateBookingRequest request)
+    //{
+    //    if (!ModelState.IsValid)
+    //    {
+    //        return BadRequest();
+    //    }
 
-    [HttpPost]
-    [EndpointDescription("Créer des réservations")]
-    [Consumes(typeof(CreateBookingRequest), "application/json")]
-    [ProducesResponseType(typeof(BookingResponse), StatusCodes.Status201Created, "application/json")]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<ActionResult<BookingResponse>> CreateBookingAsync([FromBody] CreateBookingRequest request)
-    {
-        if (!ModelState.IsValid)
-        {
-            return BadRequest();
-        }
+    //    var booking = await bookingService.CreateBookingAsync(request.ToModel());
+    //    return CreatedAtAction(nameof(GetBookingByIdAsync), new { booking.Id }, booking);
+    //}
 
-        var booking = await bookingService.CreateBookingAsync(request.ToModel());
-        return CreatedAtAction(nameof(GetBookingByIdAsync), new { booking.Id }, booking);
-    }
+    //[HttpDelete("{id}")]
+    //[EndpointDescription("Supprimer des réservations")]
+    //[ProducesResponseType(StatusCodes.Status204NoContent)]
+    //[ProducesResponseType(StatusCodes.Status404NotFound)]
+    //[ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    //public async Task<IActionResult> DeleteBookingAsync([FromRoute] int id)
+    //{
+    //    var isDeleted = await bookingService.DeleteBookingAsync(id);
 
-    [HttpDelete("{id}")]
-    [EndpointDescription("Supprimer des réservations")]
-    [ProducesResponseType(StatusCodes.Status204NoContent)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<IActionResult> DeleteBookingAsync([FromRoute] int id)
-    {
-        var isDeleted = await bookingService.DeleteBookingAsync(id);
+    //    if (!isDeleted)
+    //    {
+    //        return NotFound();
+    //    }
 
-        if (!isDeleted)
-        {
-            return NotFound();
-        }
-
-        return NoContent();
-    }
+    //    return NoContent();
+    //}
 }

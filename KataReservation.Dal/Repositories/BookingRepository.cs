@@ -101,4 +101,24 @@ public class BookingRepository : IBookingRepository
             Values.Remove(entity);
             return true;
         });
+
+    public Task<IEnumerable<BookingRepositoryDto>> GetAllBookingsAsync()
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<IEnumerable<BookingRepositoryDto>> GetBookingsByDateAsync(DateTime date)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<IEnumerable<BookingRepositoryDto>> GetBookingsByRoomAndDateAsync(int roomId, DateTime date)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<BookingRepositoryDto> AddBookingAsync(BookingRepositoryDto booking)
+    {
+        throw new NotImplementedException();
+    }
 }

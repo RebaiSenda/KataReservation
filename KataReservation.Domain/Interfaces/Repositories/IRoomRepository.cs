@@ -2,7 +2,11 @@
 
 namespace KataReservation.Domain.Interfaces.Repositories;
 
-public interface IRoomRepository
-{
-    Task<IEnumerable<RoomRepositoryDto>> GetRoomsAsync();
-}
+
+
+//public interface IRoomRepository
+//{
+
+//    Task<IEnumerable<RoomRepositoryDto>> GetRoomsAsync();
+//    //Task GetRoomByIdAsync(int id);
+//}

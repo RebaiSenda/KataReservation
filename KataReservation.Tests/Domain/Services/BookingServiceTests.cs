@@ -19,7 +19,7 @@ public class BookingServiceTests
     [Theory, AutoData]
     public async Task Shoud_Get_Values(IEnumerable<BookingRepositoryDto> values)
     {
-        _bookingRepository.GetBookingsAsync().Returns(values);
+        //_bookingRepository.GetBookingsAsync().Returns(values);
 
         var result = await _bookingService.GetBookingsAsync();
 
@@ -49,11 +49,12 @@ public class BookingServiceTests
     [Theory, AutoData]
     public async Task Shoud_Create_Value(BookingServiceDto valueServiceDto, BookingRepositoryDto valueRepositoryDto)
     {
-        _bookingRepository.CreateBookingAsync(default!).ReturnsForAnyArgs(valueRepositoryDto);
+        throw new NotImplementedException();
+        //_bookingRepository.CreateBookingAsync(default!).ReturnsForAnyArgs(valueRepositoryDto);
 
-        var result = await _bookingService.CreateBookingAsync(valueServiceDto);
+        //var result = await _bookingService.CreateBookingAsync(valueServiceDto);
 
-        Check.That(result).IsNotNull();
+        //Check.That(result).IsNotNull();
     }
 
     [Theory, AutoData]
