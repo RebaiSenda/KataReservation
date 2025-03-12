@@ -7,6 +7,8 @@ using KataReservation.Domain.Dtos.Services;
 using KataReservation.Domain.Interfaces.Services;
 using KataReservation.Api.Controllers;
 using KataReservation.Api.Dtos.Requests;
+using KataReservation.Api.Dtos.Responses;
+using KataReservation.Domain.Models;
 
 
 namespace KataReservation.Tests.Api.Controllers;
@@ -52,7 +54,7 @@ public class BookingControllerTests
     [Fact]
     public async Task Should_Not_Create_Booking_And_Return_400_When_Bad_Request()
     {
-        var request = new CreateBookingRequest(1, 1, 1, DateTime.Now, 1,1);
+        var request = new CreateBookingRequest(1, 1, 1, DateTime.Now, 1, 1);
         _BookingController.ModelState.AddModelError(string.Empty, string.Empty);
 
         var response = await _BookingController.CreateBookingAsync(request);

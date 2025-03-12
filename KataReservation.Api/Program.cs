@@ -22,6 +22,7 @@ try
 
     // Ajoutez les services de dépendance
     builder.Services.AddScoped<IBookingService, BookingService>();
+    builder.Services.AddScoped<IBookingRepository, BookingRepository>();
     builder.Services.AddScoped<IRoomRepository, RoomRepository>();
     builder.Services.AddScoped<IRoomService, RoomService>();
 

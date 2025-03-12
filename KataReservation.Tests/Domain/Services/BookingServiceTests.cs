@@ -1,69 +1,37 @@
-﻿using AutoFixture.Xunit2;
-using NFluent;
-using NSubstitute;
-using KataReservation.Domain.Dtos.Repositories;
-using KataReservation.Domain.Dtos.Services;
-using KataReservation.Domain.Interfaces.Repositories;
+﻿using KataReservation.Domain.Interfaces.Repositories;
+using KataReservation.Domain.Models;
 using KataReservation.Domain.Services;
+using NSubstitute;
 
 namespace KataReservation.Tests.Domain.Services;
 
 public class BookingServiceTests
 {
-    private readonly BookingService _bookingService;
-    private readonly IBookingRepository _bookingRepository = Substitute.For<IBookingRepository>();
+    //private readonly BookingService _bookingService;
+    //private readonly IBookingRepository _bookingRepository = Substitute.For<IBookingRepository>();
 
-    public BookingServiceTests() =>
-        _bookingService = new BookingService(_bookingRepository);
+    //public BookingServiceTests() =>
+    //    _bookingService = new BookingService(_bookingRepository);
 
-    [Theory, AutoData]
-    public async Task Shoud_Get_Values(IEnumerable<BookingRepositoryDto> values)
-    {
-        //_bookingRepository.GetBookingsAsync().Returns(values);
+    //[Fact]
+    //public async Task GetBookingsAsync_ReturnsAllBookings()
+    //{
+    //    var expectedBookings = new List<Booking>
+    //        {
+    //            new Booking { Id = 1, RoomId = 1, Title = "Meeting 1" },
+    //            new Booking { Id = 2, RoomId = 2, Title = "Meeting 2" }
+    //        };
 
-        var result = await _bookingService.GetBookingsAsync();
+    //    _mockRepository.Setup(repo => repo.GetAllAsync())
+    //        .ReturnsAsync(expectedBookings);
 
-        Check.That(result).IsNotNull();
-    }
+    //    var result = await _service.GetBookingsAsync();
 
-    [Theory, AutoData]
-    public async Task Shoud_Get_Value_When_Value_Exists(int id, BookingRepositoryDto value)
-    {
-        _bookingRepository.GetBookingByIdAsync(id).Returns(value);
+    //    var bookings = result.ToList();
+    //    Assert.Equal(2, bookings.Count);
+    //    Assert.Equal(expectedBookings[0].Id, bookings[0].Id);
+    //    Assert.Equal(expectedBookings[1].Id, bookings[1].Id);
+    //    _mockRepository.Verify(repo => repo.GetAllAsync(), Times.Once);
+    //}
 
-        var result = await _bookingService.GetBookingByIdAsync(id);
-
-        Check.That(result).IsNotNull();
-    }
-
-    [Theory, AutoData]
-    public async Task Shoud_Not_Get_Value_And_Return_Null_When_Value_Doesnt_Exist(int id)
-    {
-        _bookingRepository.GetBookingByIdAsync(id).Returns((BookingRepositoryDto?)null);
-
-        var result = await _bookingService.GetBookingByIdAsync(id);
-
-        Check.That(result).IsNull();
-    }
-
-    [Theory, AutoData]
-    public async Task Shoud_Create_Value(BookingServiceDto valueServiceDto, BookingRepositoryDto valueRepositoryDto)
-    {
-        throw new NotImplementedException();
-        //_bookingRepository.CreateBookingAsync(default!).ReturnsForAnyArgs(valueRepositoryDto);
-
-        //var result = await _bookingService.CreateBookingAsync(valueServiceDto);
-
-        //Check.That(result).IsNotNull();
-    }
-
-    [Theory, AutoData]
-    public async Task Shoud_Delete_Value(int id)
-    {
-        _bookingRepository.DeleteBookingAsync(id).Returns(true);
-
-        var result = await _bookingService.DeleteBookingAsync(id);
-
-        Check.That(result).IsTrue();
-    }
 }

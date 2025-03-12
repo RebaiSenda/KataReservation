@@ -58,4 +58,5 @@ public interface IRoomRepository
     Task<RoomRepositoryDto> CreateRoomAsync(string roomName);
     Task<RoomRepositoryDto> UpdateRoomAsync(int id, string roomName);
     Task<bool> DeleteRoomAsync(int id);
+
 }

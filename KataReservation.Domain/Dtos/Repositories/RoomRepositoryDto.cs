@@ -12,6 +12,12 @@ public record RoomRepositoryDto(int Id, string RoomName)
 public record RoomResponse(RoomServiceDto Room);
 public record RoomsResponse(IEnumerable<RoomServiceDto> Rooms);
 public record CreateRoomRequest([Required] string RoomName);
+//{
+    //public CreateRoomRequest()
+    //{
+    //}
+//}
+
 public record UpdateRoomRequest([Required] string RoomName);
 
 public record RoomServiceDto(int Id, string RoomName)

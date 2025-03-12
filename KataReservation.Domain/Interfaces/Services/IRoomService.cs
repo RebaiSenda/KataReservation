@@ -12,5 +12,4 @@ public interface IRoomService
     Task<RoomServiceDto> CreateRoomAsync(string roomName);
     Task<RoomServiceDto> UpdateRoomAsync(int id, string roomName);
     Task<bool> DeleteRoomAsync(int id);
-    //Task<RoomServiceDto> GetRoomByIdAsync(int id); // Add this method to the interface
 }
