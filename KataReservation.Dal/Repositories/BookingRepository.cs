@@ -160,18 +160,17 @@ public class BookingRepository(KataReservationContext kataReservation) : IBookin
     }
     public async Task<List<BookingRepositoryDto>> GetByRoomAndDateAsync(int roomId, DateTime date)
     {
-        // Récupérer les réservations qui correspondent au roomId et à la date spécifiée
+
         var bookings = await kataReservation.Bookings
             .Include(b => b.Room)
             .Include(b => b.Person)
             .Where(b => b.RoomId == roomId && b.BookingDate.Date == date.Date)
             .ToListAsync();
 
-        // Mapper les entités vers des DTOs
         return bookings.Select(b => new BookingRepositoryDto(
             b.Id,
-            b.RoomId, // Utilisation de RoomId au lieu de l'objet RoomEntity
-            b.PersonId, // Utilisation de PersonId au lieu de l'objet PersonEntity
+            b.RoomId, 
+            b.PersonId, 
             b.BookingDate,
             b.StartSlot,
             b.EndSlot

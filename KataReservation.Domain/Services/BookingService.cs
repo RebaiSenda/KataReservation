@@ -96,20 +96,16 @@ public class BookingService(IBookingRepository bookingRepository, IRoomRepositor
     }
     public async Task<bool> IsSlotAvailableAsync(int roomId, DateTime date, int startSlot, int endSlot)
     {
-        // Vérifier si la salle existe
         var room = await _roomRepository.GetRoomByIdAsync(roomId);
         if (room == null)
         {
             return false;
         }
 
-        // Récupérer toutes les réservations pour cette salle et cette date
         var bookings = await _bookingRepository.GetByRoomAndDateAsync(roomId, date);
 
-        // Vérifier s'il y a des conflits
         foreach (var booking in bookings)
         {
-            // Vérifier si les créneaux se chevauchent
             if (!(endSlot <= booking.StartSlot || startSlot >= booking.EndSlot))
             {
                 return false;
@@ -120,31 +116,25 @@ public class BookingService(IBookingRepository bookingRepository, IRoomRepositor
     }
     public async Task<List<AvailableSlotDto>> GetAvailableSlotsAsync(int roomId, DateTime date)
     {
-        // Vérifier si la salle existe
         var room = await _roomRepository.GetRoomByIdAsync(roomId);
         if (room == null)
         {
             return new List<AvailableSlotDto>();
         }
-
-        // Récupérer toutes les réservations pour cette salle et cette date
         var bookings = await _bookingRepository.GetByRoomAndDateAsync(roomId, date);
 
-        // Créer une liste de tous les créneaux possibles (par exemple, de 8h à 18h)
         var allSlots = new List<AvailableSlotDto>();
         for (int i = 8; i < 18; i++)
         {
             allSlots.Add(new AvailableSlotDto(i, i + 1));
         }
 
-        // Supprimer les créneaux déjà réservés
         foreach (var booking in bookings)
         {
             allSlots.RemoveAll(slot =>
                 !(slot.EndSlot <= booking.StartSlot || slot.StartSlot >= booking.EndSlot));
         }
 
-        // Fusionner les créneaux adjacents
         var mergedSlots = new List<AvailableSlotDto>();
         if (allSlots.Count > 0)
         {
@@ -154,18 +144,15 @@ public class BookingService(IBookingRepository bookingRepository, IRoomRepositor
             {
                 if (allSlots[i].StartSlot == currentSlot.EndSlot)
                 {
-                    // Fusionner les créneaux
                     currentSlot = new AvailableSlotDto(currentSlot.StartSlot, allSlots[i].EndSlot);
                 }
                 else
                 {
-                    // Ajouter le créneau actuel et passer au suivant
                     mergedSlots.Add(currentSlot);
                     currentSlot = allSlots[i];
                 }
             }
 
-            // Ajouter le dernier créneau
             mergedSlots.Add(currentSlot);
         }
 

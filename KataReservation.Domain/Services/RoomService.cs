@@ -50,13 +50,4 @@ public class RoomService(IRoomRepository roomRepository) : IRoomService
         return await roomRepository.DeleteRoomAsync(id);
     }
 }
-public interface IRoomRepository
-{
-     Task<RoomRepositoryDto> GetRoomByIdAsync(int id);
-    Task<IEnumerable<RoomRepositoryDto>> GetRoomsAsync();
 
-    Task<RoomRepositoryDto> CreateRoomAsync(string roomName);
-    Task<RoomRepositoryDto> UpdateRoomAsync(int id, string roomName);
-    Task<bool> DeleteRoomAsync(int id);
-
-}

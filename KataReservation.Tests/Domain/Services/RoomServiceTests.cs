@@ -10,6 +10,7 @@ using KataReservation.Domain.Services;
 using KataReservation.Domain.Models;
 using KataReservation.Domain.Dtos.Repositories;
 using Moq;
+using KataReservation.Domain.Interfaces.Repositories;
 
 namespace KataReservation.Tests.Domain.Services;
 

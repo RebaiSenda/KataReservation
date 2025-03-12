@@ -1,30 +1,17 @@
 ﻿using KataReservation.Dal.Entities;
 using KataReservation.Domain.Dtos.Repositories;
 using KataReservation.Domain.Interfaces.Repositories;
+using Microsoft.EntityFrameworkCore;
 
 namespace KataReservation.Dal.Repositories;
 
-public class PersonRepository : IPersonRepository
+public class PersonRepository(KataReservationContext kataReservation) : IPersonRepository
 {
-    private static readonly IList<PersonEntity> Values =
-    [
-        new PersonEntity
-        {
-            Id = 100,
-            FirstName = "John",
-            LastName = "Doe",
-        },
-        new PersonEntity
-        {
-            Id = 100,
-            FirstName = "Jane",
-            LastName = "Doe",
-        }
-    ];
+    
 
     public async Task<PersonRepositoryDto?> GetPersonByIdAsync(int id)
     {
-        var entity = await Task.FromResult(Values.SingleOrDefault(v => v.Id == id));
+        var entity = await kataReservation.People.SingleOrDefaultAsync(v => v.Id == id);
 
         if (entity is null)
         {

@@ -29,8 +29,6 @@ public class RoomRepository(KataReservationContext kataReservation) : IRoomRepos
 
     }
 
-
-
     public async Task<RoomRepositoryDto> CreateRoomAsync(string roomName)
     {
         var roomEntity = new RoomEntity { RoomName = roomName };
