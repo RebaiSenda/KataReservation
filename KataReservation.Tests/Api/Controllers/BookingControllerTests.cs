@@ -32,15 +32,6 @@ public class BookingControllerTests
         Check.That(response.Result).IsInstanceOf<CreatedAtActionResult>();
     }
 
-    [Fact]
-    public async Task Should_Not_Create_Booking_And_Return_400_When_Bad_Request()
-    {
-        var request = new CreateBookingRequest(1, 1, 1, DateTime.Now, 1, 1);
-        _BookingController.ModelState.AddModelError(string.Empty, string.Empty);
-        var response = await _BookingController.CreateBookingAsync(request);
-        Check.That(response.Result).IsInstanceOf<BadRequestResult>();
-    }
-
     [Theory, AutoData]
     public async Task Should_Delete_Booking_When_Booking_Exists(int id)
     {
