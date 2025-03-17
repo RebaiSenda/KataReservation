@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.Logging;
-using NSubstitute;
 using KataReservation.Domain.Interfaces.Services;
 using KataReservation.Api.Controllers;
 using KataReservation.Api.Dtos.Requests;

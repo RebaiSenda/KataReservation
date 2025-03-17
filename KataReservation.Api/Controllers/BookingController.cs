@@ -17,7 +17,7 @@ public class BookingController(IBookingService bookingService, ILogger<BookingCo
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
 
-    public async Task<ActionResult<BookingResponse>> CreateBooking(CreateBookingRequest request)
+    public async Task<ActionResult<BookingResponse>> CreateBooking([FromBody] CreateBookingRequest request)
     {
         try
         {
