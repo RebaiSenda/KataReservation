@@ -65,4 +65,6 @@ public partial class KataReservationContext : DbContext
     }
 
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
+
+
 }

@@ -3,9 +3,7 @@ using KataReservation.Api.Dtos.Responses;
 using KataReservation.Domain.Dtos.Services;
 using KataReservation.Domain.Interfaces.Services;
 using Microsoft.AspNetCore.Mvc;
-
 namespace KataReservation.Api.Controllers;
-
 [Route("api/bookings")]
 [ApiController]
 public class BookingController(IBookingService bookingService, ILogger<BookingController> logger) : ControllerBase
@@ -16,9 +14,11 @@ public class BookingController(IBookingService bookingService, ILogger<BookingCo
     [ProducesResponseType(typeof(PersonResponse), StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-
     public async Task<ActionResult<BookingResponse>> CreateBooking([FromBody] CreateBookingRequest request)
     {
+        logger.LogInformation("Tentative de création d'une réservation: PersonId {PersonId}, RoomId {RoomId}, Date {BookingDate}, Créneau {StartSlot}-{EndSlot}",
+            request.PersonId, request.RoomId, request.BookingDate, request.StartSlot, request.EndSlot);
+
         try
         {
             var bookingDto = new BookingServiceDto(
@@ -26,11 +26,13 @@ public class BookingController(IBookingService bookingService, ILogger<BookingCo
                 request.RoomId,
                 request.PersonId,
                 request.BookingDate,
-            request.StartSlot,
+                request.StartSlot,
                 request.EndSlot
             );
 
             var result = await bookingService.CreateBookingAsync(bookingDto);
+
+            logger.LogInformation("Réservation créée avec succès: ID {BookingId}", result.Id);
 
             var response = new BookingResponse(
                 result.Id,
@@ -45,7 +47,13 @@ public class BookingController(IBookingService bookingService, ILogger<BookingCo
         }
         catch (InvalidOperationException ex)
         {
+            logger.LogWarning(ex, "Erreur de validation lors de la création d'une réservation: {ErrorMessage}", ex.Message);
             return BadRequest(ex.Message);
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "Erreur inattendue lors de la création d'une réservation");
+            return StatusCode(StatusCodes.Status500InternalServerError, "Une erreur interne est survenue lors de la création de la réservation");
         }
     }
 
@@ -56,12 +64,25 @@ public class BookingController(IBookingService bookingService, ILogger<BookingCo
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> DeleteBooking(int id)
     {
-        var result = await bookingService.DeleteBookingAsync(id);
+        logger.LogInformation("Tentative de suppression de la réservation avec ID {BookingId}", id);
 
-        if (!result)
+        try
         {
-            return NotFound();
+            var result = await bookingService.DeleteBookingAsync(id);
+
+            if (!result)
+            {
+                logger.LogWarning("Tentative de suppression d'une réservation inexistante: ID {BookingId}", id);
+                return NotFound();
+            }
+
+            logger.LogInformation("Réservation supprimée avec succès: ID {BookingId}", id);
+            return NoContent();
         }
-        return NoContent();
-    }  
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "Erreur inattendue lors de la suppression de la réservation avec ID {BookingId}", id);
+            return StatusCode(StatusCodes.Status500InternalServerError, "Une erreur interne est survenue lors de la suppression de la réservation");
+        }
+    }
 }
