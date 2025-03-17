@@ -2,7 +2,6 @@
 using KataReservation.Domain.Dtos.Services;
 using KataReservation.Domain.Interfaces.Repositories;
 using KataReservation.Domain.Interfaces.Services;
-using KataReservation.Domain.Models;
 
 namespace KataReservation.Domain.Services;
 
