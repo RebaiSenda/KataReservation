@@ -7,41 +7,20 @@ namespace KataReservation.Dal.Repositories;
 
 public class BookingRepository(KataReservationContext kataReservation) : IBookingRepository
 {
-
-
-    public async Task<BookingRepositoryDto> CreateBookingAsync(BookingRepositoryDto value)
+    public async Task<BookingRepositoryDto> CreateBookingAsync(BookingRepositoryDto booking)
     {
-        var newBooking = new BookingEntity
+        var entity = new BookingEntity
         {
-            RoomId = value.RoomId,
-            PersonId = value.PersonId,
-            BookingDate = value.BookingDate,
-            StartSlot = value.StartSlot,
-            EndSlot = value.EndSlot
+            RoomId = booking.RoomId,
+            PersonId = booking.PersonId,
+            BookingDate = booking.BookingDate.Date,
+            StartSlot = booking.StartSlot,
+            EndSlot = booking.EndSlot
         };
 
-        await Task.Run(() =>
-        {
-            kataReservation.Bookings.Add(newBooking);
-            kataReservation.SaveChanges();
-        });
+        kataReservation.Bookings.Add(entity);
+        await kataReservation.SaveChangesAsync();
 
-        return new BookingRepositoryDto(
-            newBooking.Id,
-            newBooking.RoomId,
-            newBooking.PersonId,
-            newBooking.BookingDate,
-            newBooking.StartSlot,
-            newBooking.EndSlot
-        );
-    }
-    public async Task<BookingRepositoryDto> GetBookingByIdAsync(int id)
-    {
-        var entity = await kataReservation.Bookings.SingleOrDefaultAsync(b => b.Id == id);
-        if (entity is null)
-        {
-            return null!;
-        }
         return new BookingRepositoryDto(
             entity.Id,
             entity.RoomId,
@@ -52,25 +31,52 @@ public class BookingRepository(KataReservationContext kataReservation) : IBookin
         );
     }
 
-    public async Task<bool> DeleteBookingAsync(int id)
+    public async Task<bool> DeleteBookingAsync(int bookingId)
     {
-        return await Task.Run(() =>
+        var booking = await kataReservation.Bookings.FindAsync(bookingId);
+        if (booking == null)
         {
-            var booking = kataReservation.Bookings.SingleOrDefault(b => b.Id == id);
-            if (booking is null)
-            {
-                return false;
-            }
+            return false;
+        }
 
-            kataReservation.Bookings.Remove(booking);
-            kataReservation.SaveChanges();
-            return true;
-        });
+        kataReservation.Bookings.Remove(booking);
+        await kataReservation.SaveChangesAsync();
+        return true;
     }
 
-
-    public async Task<BookingRepositoryDto> AddBookingAsync(BookingRepositoryDto booking)
+    public async Task<BookingRepositoryDto?> GetBookingByIdAsync(int bookingId)
     {
-        return await CreateBookingAsync(booking);
+        var booking = await kataReservation.Bookings.FindAsync(bookingId);
+        if (booking == null)
+        {
+            return null;
+        }
+
+        return new BookingRepositoryDto(
+            booking.Id,
+            booking.RoomId,
+            booking.PersonId,
+            booking.BookingDate,
+            booking.StartSlot,
+            booking.EndSlot
+        );
     }
+
+    public async Task<IEnumerable<BookingRepositoryDto>> GetConflictingBookingsAsync(int roomId, DateTime bookingDate, int startSlot, int endSlot)
+    {
+        return await kataReservation.Bookings
+            .Where(b => b.RoomId == roomId &&
+                  b.BookingDate.Date == bookingDate.Date &&
+                  ((b.StartSlot <= startSlot && b.EndSlot > startSlot) ||
+                   (b.StartSlot < endSlot && b.EndSlot >= endSlot) ||
+                   (b.StartSlot >= startSlot && b.EndSlot <= endSlot)))
+            .Select(b => new BookingRepositoryDto(
+                b.Id,
+                b.RoomId,
+                b.PersonId,
+                b.BookingDate,
+                b.StartSlot,
+                b.EndSlot))
+            .ToListAsync();
+    }  
 }

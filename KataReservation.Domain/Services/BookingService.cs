@@ -8,49 +8,56 @@ namespace KataReservation.Domain.Services;
 
 public class BookingService(IBookingRepository bookingRepository) : IBookingService
 {
-    //private readonly IBookingRepository _bookingRepository = bookingRepository;
-    //private readonly IRoomRepository _roomRepository = roomRepository;
 
-
-
-    public async Task<BookingServiceDto> GetBookingByIdAsync(int id)
+    public async Task<BookingServiceDto> CreateBookingAsync(BookingServiceDto booking)
     {
-        var BookingDto = await bookingRepository.GetBookingByIdAsync(id);
+        await ValidateBookingAsync(booking);
 
-        if (BookingDto is null)
+        var repositoryDto = new BookingRepositoryDto(booking);
+        var result = await bookingRepository.CreateBookingAsync(repositoryDto);
+
+        return new BookingServiceDto(
+            result.Id,
+            result.RoomId,
+            result.PersonId,
+            result.BookingDate,
+            result.StartSlot,
+            result.EndSlot
+        );
+    }
+
+    public async Task<bool> DeleteBookingAsync(int bookingId)
+    {
+        return await bookingRepository.DeleteBookingAsync(bookingId);
+    }
+
+    private async Task ValidateBookingAsync(BookingServiceDto booking)
+    {
+        if (booking.BookingDate.Date < DateTime.Today)
         {
-            return null!;
+            throw new InvalidOperationException("La date de réservation doit être une date future.");
         }
 
-        var Booking = new Booking(BookingDto.Id, BookingDto.RoomId, BookingDto.PersonId, BookingDto.BookingDate, BookingDto.StartSlot, BookingDto.EndSlot);
-        return new BookingServiceDto(Booking);
-    }
-    public async Task<bool> DeleteBookingAsync(int id) =>
-        await bookingRepository.DeleteBookingAsync(id);
+        if (booking.StartSlot >= booking.EndSlot)
+        {
+            throw new InvalidOperationException("L'heure de début doit être avant l'heure de fin.");
+        }
 
+        if (booking.StartSlot < 1 || booking.StartSlot > 24 || booking.EndSlot < 1 || booking.EndSlot > 24)
+        {
+            throw new InvalidOperationException("Les créneaux horaires doivent être entre 1 et 24.");
+        }
 
-    public async Task<BookingServiceDto> CreateBookingAsync(BookingServiceDto bookingDto)
-    {
-        var bookingRepositoryDto = new BookingRepositoryDto(
-            bookingDto.Id,
-            bookingDto.RoomId,
-            bookingDto.PersonId,
-            bookingDto.BookingDate,
-            bookingDto.StartSlot,
-            bookingDto.EndSlot
+        var conflictingBookings = await bookingRepository.GetConflictingBookingsAsync(
+            booking.RoomId,
+            booking.BookingDate,
+            booking.StartSlot,
+            booking.EndSlot
         );
 
-        var createdBookingDto = await bookingRepository.AddBookingAsync(bookingRepositoryDto);
-
-        var booking = new Booking(
-            createdBookingDto.Id,
-            createdBookingDto.RoomId,
-            createdBookingDto.PersonId,
-            createdBookingDto.BookingDate,
-            createdBookingDto.StartSlot,
-            createdBookingDto.EndSlot
-        );
-
-        return new BookingServiceDto(booking);
+        if (conflictingBookings.Any())
+        {
+            throw new InvalidOperationException("Ce créneau horaire est déjà réservé pour cette salle.");
+        }
     }
 }
