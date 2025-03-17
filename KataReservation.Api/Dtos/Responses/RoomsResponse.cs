@@ -2,7 +2,7 @@
 
 namespace KataReservation.Api.Dtos.Responses;
 
-public record RoomsResponse(IEnumerable<RoomResponse> Values)
+public record RoomsResponse(IEnumerable<RoomResponse> Rooms)
 {
-    public RoomsResponse(IEnumerable<RoomServiceDto> values) : this(values.Select(v => new RoomResponse(v))) { }
+    public RoomsResponse(IEnumerable<RoomServiceDto> Rooms) : this(Rooms.Select(v => new RoomResponse(v))) { }
 }

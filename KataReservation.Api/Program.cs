@@ -20,13 +20,6 @@ try
     builder.Services.AddDbContext<KataReservationContext>(options =>
         options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-    // Ajoutez les services de dépendance
-    builder.Services.AddScoped<IBookingService, BookingService>();
-    builder.Services.AddScoped<IBookingRepository, BookingRepository>();
-    builder.Services.AddScoped<IRoomRepository, RoomRepository>();
-    builder.Services.AddScoped<IRoomService, RoomService>();
-
-
     builder.Host.UseSerilog((ctx, lc) => lc
         .WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level}] {SourceContext}{NewLine}{Message:lj}{NewLine}{Exception}{NewLine}")
         .Enrich.FromLogContext()

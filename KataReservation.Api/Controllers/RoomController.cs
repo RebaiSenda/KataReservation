@@ -1,16 +1,12 @@
-﻿using KataReservation.Api.Dtos.Requests;
-using KataReservation.Api.Dtos.Responses;
-using KataReservation.Domain.Dtos.Repositories;
+﻿using KataReservation.Domain.Dtos.Repositories;
 using KataReservation.Domain.Interfaces.Services;
-using KataReservation.Domain.Services;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RoomResponse = KataReservation.Api.Dtos.Responses.RoomResponse;
 using RoomsResponse = KataReservation.Api.Dtos.Responses.RoomsResponse;
 
 namespace KataReservation.Api.Controllers;
 
-[Route("api/Room")]
+[Route("api/rooms")]
 [ApiController]
 public class RoomController(IRoomService RoomService, ILogger<RoomController> logger) : ControllerBase
 {

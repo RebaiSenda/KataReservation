@@ -1,5 +1,4 @@
 ﻿using KataReservation.Api.Middlewares;
-using KataReservation.Api.Middlewares;
 using KataReservation.Dal.Repositories;
 using KataReservation.Domain.Interfaces.Repositories;
 using KataReservation.Domain.Interfaces.Services;
@@ -28,9 +27,13 @@ internal static class HostingExtensions
         {
             options.AddDocumentTransformer<BearerSecuritySchemeTransformer>();
         });
+
         builder.Services.AddScoped<IBookingService, BookingService>();
         builder.Services.AddScoped<IBookingRepository, BookingRepository>();
-
+        builder.Services.AddScoped<IRoomRepository, RoomRepository>();
+        builder.Services.AddScoped<IRoomService, RoomService>();
+        builder.Services.AddScoped<IPersonRepository, PersonRepository>();
+        builder.Services.AddScoped<IPersonService, PersonService>();
         return builder.Build();
     }
 

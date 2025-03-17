@@ -22,7 +22,7 @@ public class RoomRepository(KataReservationContext kataReservation) : IRoomRepos
 
         if (room == null)
         {
-            return null;
+            return null!;
         }
 
         return new RoomRepositoryDto(room.Id, room.RoomName);
@@ -43,7 +43,7 @@ public class RoomRepository(KataReservationContext kataReservation) : IRoomRepos
         var roomEntity = await kataReservation.Rooms.FirstOrDefaultAsync(r => r.Id == id);
         if (roomEntity == null)
         {
-            return null;
+            return null!;
         }
 
         roomEntity.RoomName = roomName;
