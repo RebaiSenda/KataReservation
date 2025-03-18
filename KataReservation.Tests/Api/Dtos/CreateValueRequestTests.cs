@@ -20,5 +20,5 @@ public class CreateValueRequestTests
     }
 
 
-    private static CreateBookingRequest CreateValidRequest() => new(1,1,1,DateTime.Now,1,1);
+    private static CreateBookingRequest CreateValidRequest() => new(1,1,DateTime.Now,1,1);
 }

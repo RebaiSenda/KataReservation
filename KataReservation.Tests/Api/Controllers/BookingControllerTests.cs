@@ -26,7 +26,6 @@ public class BookingControllerTests
     public async Task CreateBooking_ShouldReturnCreatedAtAction_WhenBookingIsValid()
     {
         var request = new CreateBookingRequest(
-            id:1,
             RoomId: 1,
             PersonId: 1,
             BookingDate: DateTime.Today.AddDays(1),
@@ -51,7 +50,6 @@ public class BookingControllerTests
 
         var createdAtActionResult = Assert.IsType<CreatedAtActionResult>(result.Result);
         var returnValue = Assert.IsType<BookingResponse>(createdAtActionResult.Value);
-        Assert.Equal(expectedResult.Id, returnValue.Id);
         Assert.Equal(expectedResult.RoomId, returnValue.RoomId);
         Assert.Equal(expectedResult.PersonId, returnValue.PersonId);
         Assert.Equal(expectedResult.BookingDate, returnValue.BookingDate);
@@ -63,7 +61,6 @@ public class BookingControllerTests
     public async Task CreateBooking_ShouldReturnBadRequest_WhenServiceThrowsException()
     {
         var request = new CreateBookingRequest(
-            id: 1,
             RoomId: 1,
             PersonId: 1,
             BookingDate: DateTime.Today.AddDays(1),

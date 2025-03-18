@@ -22,7 +22,7 @@ public class BookingRepository(KataReservationContext kataReservation) : IBookin
         await kataReservation.SaveChangesAsync();
 
         return new BookingRepositoryDto(
-            entity.Id,
+            0,
             entity.RoomId,
             entity.PersonId,
             entity.BookingDate,
@@ -30,7 +30,19 @@ public class BookingRepository(KataReservationContext kataReservation) : IBookin
             entity.EndSlot
         );
     }
-
+    public async Task<IEnumerable<BookingRepositoryDto>> GetBookingsByRoomAndDateAsync(int roomId, DateTime date)
+    {
+        return await kataReservation.Bookings
+            .Where(b => b.RoomId == roomId && b.BookingDate.Date == date.Date)
+            .Select(b => new BookingRepositoryDto(
+                b.Id,
+                b.RoomId,
+                b.PersonId,
+                b.BookingDate,
+                b.StartSlot,
+                b.EndSlot))
+            .ToListAsync();
+    }
     public async Task<bool> DeleteBookingAsync(int bookingId)
     {
         var booking = await kataReservation.Bookings.FindAsync(bookingId);
@@ -53,7 +65,7 @@ public class BookingRepository(KataReservationContext kataReservation) : IBookin
         }
 
         return new BookingRepositoryDto(
-            booking.Id,
+            0,
             booking.RoomId,
             booking.PersonId,
             booking.BookingDate,
@@ -71,7 +83,7 @@ public class BookingRepository(KataReservationContext kataReservation) : IBookin
                    (b.StartSlot < endSlot && b.EndSlot >= endSlot) ||
                    (b.StartSlot >= startSlot && b.EndSlot <= endSlot)))
             .Select(b => new BookingRepositoryDto(
-                b.Id,
+                0,
                 b.RoomId,
                 b.PersonId,
                 b.BookingDate,

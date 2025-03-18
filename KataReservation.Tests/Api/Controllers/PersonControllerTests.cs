@@ -28,8 +28,8 @@ namespace KataReservation.Tests.Api.Controllers
         {
             var personDtos = new List<PersonServiceDto>
             {
-                new PersonServiceDto(new Person(1, "John", "Doe")),
-                new PersonServiceDto(new Person(2, "Jane", "Smith"))
+                new(new Person(1, "John", "Doe")),
+                new(new Person(2, "Jane", "Smith"))
             };
 
             _mockPersonService.Setup(service => service.GetPersonsAsync())
