@@ -13,16 +13,18 @@ internal static class HostingExtensions
     {
         builder.Services.AddControllers(options => options.SuppressAsyncSuffixInActionNames = false);
         builder.Services.AddAuthentication()
-            .AddJwtBearer(options =>
-            {
-                options.Authority = builder.Configuration["IdentityServer"];
-                options.TokenValidationParameters.ValidateAudience = false;
-            });
-        builder.Services.AddAuthorizationBuilder()
-            .AddPolicy("KataReservationApiPolicy", policy =>
-            {
-                policy.RequireClaim("scope", "KataReservation.Api");
-            });
+           .AddJwtBearer(options =>
+           {
+               options.Authority = "https://localhost:5001";
+               options.TokenValidationParameters.ValidateAudience = false;
+           });
+
+        //builder.Services.AddAuthorization();
+        //builder.Services.AddAuthorizationBuilder()
+        //    .AddPolicy("KataReservationApiPolicy", policy =>
+        //    {
+        //        policy.RequireClaim("scope", "KataReservation.Api");
+        //    });
         builder.Services.AddOpenApi(options =>
         {
             options.AddDocumentTransformer<BearerSecuritySchemeTransformer>();
