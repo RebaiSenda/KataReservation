@@ -1,5 +1,6 @@
 ﻿using KataReservation.Domain.Dtos.Repositories;
 using KataReservation.Domain.Dtos.Services;
+using KataReservation.Domain.Exceptions;
 using KataReservation.Domain.Interfaces.Repositories;
 using KataReservation.Domain.Services;
 using Moq;
@@ -20,6 +21,7 @@ public class BookingServiceTests
     [Fact]
     public async Task CreateBookingAsync_ShouldCreateBooking_WhenDataIsValid()
     {
+        // Arrange
         var bookingDto = new BookingServiceDto(
             Id: 0,
             RoomId: 1,
@@ -50,8 +52,10 @@ public class BookingServiceTests
             .Setup(r => r.CreateBookingAsync(It.IsAny<BookingRepositoryDto>()))
             .ReturnsAsync(expectedResult);
 
+        // Act
         var result = await _service.CreateBookingAsync(bookingDto);
 
+        // Assert
         Assert.Equal(expectedResult.Id, result.Id);
         Assert.Equal(expectedResult.RoomId, result.RoomId);
         Assert.Equal(expectedResult.PersonId, result.PersonId);
@@ -63,6 +67,7 @@ public class BookingServiceTests
     [Fact]
     public async Task CreateBookingAsync_ShouldThrowException_WhenDateIsInPast()
     {
+        // Arrange
         var bookingDto = new BookingServiceDto(
             Id: 0,
             RoomId: 1,
@@ -72,6 +77,7 @@ public class BookingServiceTests
             EndSlot: 10
         );
 
+        // Act & Assert
         var exception = await Assert.ThrowsAsync<InvalidOperationException>(
             () => _service.CreateBookingAsync(bookingDto));
         Assert.Contains("date future", exception.Message);
@@ -80,6 +86,7 @@ public class BookingServiceTests
     [Fact]
     public async Task CreateBookingAsync_ShouldThrowException_WhenStartSlotIsAfterEndSlot()
     {
+        // Arrange
         var bookingDto = new BookingServiceDto(
             Id: 0,
             RoomId: 1,
@@ -89,6 +96,7 @@ public class BookingServiceTests
             EndSlot: 9
         );
 
+        // Act & Assert
         var exception = await Assert.ThrowsAsync<InvalidOperationException>(
             () => _service.CreateBookingAsync(bookingDto));
         Assert.Contains("heure de début", exception.Message);
@@ -97,6 +105,7 @@ public class BookingServiceTests
     [Fact]
     public async Task CreateBookingAsync_ShouldThrowException_WhenSlotsAreInvalid()
     {
+        // Arrange
         var bookingDto = new BookingServiceDto(
             Id: 0,
             RoomId: 1,
@@ -106,14 +115,16 @@ public class BookingServiceTests
             EndSlot: 25
         );
 
+        // Act & Assert
         var exception = await Assert.ThrowsAsync<InvalidOperationException>(
             () => _service.CreateBookingAsync(bookingDto));
         Assert.Contains("créneaux horaires", exception.Message);
     }
 
     [Fact]
-    public async Task CreateBookingAsync_ShouldThrowException_WhenBookingConflicts()
+    public async Task CreateBookingAsync_ShouldThrowBookingConflictException_WhenBookingConflicts()
     {
+        // Arrange
         var bookingDto = new BookingServiceDto(
             Id: 0,
             RoomId: 1,
@@ -143,7 +154,8 @@ public class BookingServiceTests
                 bookingDto.EndSlot))
             .ReturnsAsync(conflictingBookings);
 
-        var exception = await Assert.ThrowsAsync<InvalidOperationException>(
+        // Act & Assert
+        var exception = await Assert.ThrowsAsync<BookingConflictException>(
             () => _service.CreateBookingAsync(bookingDto));
         Assert.Contains("créneau horaire", exception.Message);
     }
@@ -151,26 +163,32 @@ public class BookingServiceTests
     [Fact]
     public async Task DeleteBookingAsync_ShouldReturnTrue_WhenBookingExists()
     {
+        // Arrange
         var bookingId = 1;
         _mockBookingRepository
             .Setup(r => r.DeleteBookingAsync(bookingId))
             .ReturnsAsync(true);
 
+        // Act
         var result = await _service.DeleteBookingAsync(bookingId);
 
+        // Assert
         Assert.True(result);
     }
 
     [Fact]
     public async Task DeleteBookingAsync_ShouldReturnFalse_WhenBookingDoesNotExist()
     {
+        // Arrange
         var bookingId = 1;
         _mockBookingRepository
             .Setup(r => r.DeleteBookingAsync(bookingId))
             .ReturnsAsync(false);
 
+        // Act
         var result = await _service.DeleteBookingAsync(bookingId);
 
+        // Assert
         Assert.False(result);
     }
 }

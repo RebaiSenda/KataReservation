@@ -36,6 +36,7 @@ internal static class HostingExtensions
         builder.Services.AddScoped<IRoomService, RoomService>();
         builder.Services.AddScoped<IPersonRepository, PersonRepository>();
         builder.Services.AddScoped<IPersonService, PersonService>();
+
         return builder.Build();
     }
 

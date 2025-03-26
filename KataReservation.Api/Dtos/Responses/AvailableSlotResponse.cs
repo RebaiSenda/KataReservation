@@ -6,12 +6,12 @@ namespace KataReservation.Api.Dtos.Responses
 
     public record AvailableSlotsResponse
     {
-        public List<AvailableSlotResponse> AvailableSlots { get; }
+        public List<AvailableSlotResponse> AvailableSlots { get; init; }
 
         public AvailableSlotsResponse(List<AvailableSlotDto> availableSlots)
         {
-            AvailableSlots = availableSlots.Select(slot =>
-                new AvailableSlotResponse(slot.StartSlot, slot.EndSlot)).ToList();
+            AvailableSlots = [.. availableSlots.Select(slot =>
+            new AvailableSlotResponse(slot.StartSlot, slot.EndSlot))];
         }
     }
     public record BookingAvailabilityResponse(bool IsAvailable, List<AvailableSlotDto> AvailableSlots);

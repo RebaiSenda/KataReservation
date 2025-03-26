@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using KataReservation.Domain.Dtos.Services;
+﻿using KataReservation.Domain.Dtos.Services;
 
-namespace KataReservation.Domain.Dtos.Repositories
+namespace KataReservation.Tests.Api.Dtos
 {
     public record PersonRepositoryDtoWithCase(int Id, string FirstName, string LastName)
     {

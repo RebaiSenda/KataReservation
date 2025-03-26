@@ -1,9 +1,5 @@
 using KataReservation.Api;
 using KataReservation.Dal.Entities;
-using KataReservation.Dal.Repositories;
-using KataReservation.Domain.Interfaces.Repositories;
-using KataReservation.Domain.Interfaces.Services;
-using KataReservation.Domain.Services;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 
@@ -16,6 +12,16 @@ Log.Information("Starting up");
 try
 {
     var builder = WebApplication.CreateBuilder(args);
+    // Add service
+    builder.Services.AddCors(options =>
+    {
+        options.AddPolicy("AllowAngularApp", policy =>
+        {
+            policy.WithOrigins("https://localhost:4200")
+                  .AllowAnyHeader()
+                  .AllowAnyMethod();
+        });
+    });
     //Ajoutez le contexte de la base de données
     builder.Services.AddDbContext<KataReservationContext>(options =>
         options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -28,7 +34,8 @@ try
     var app = builder
         .ConfigureServices()
         .ConfigurePipeline();
-
+    // Activation de CORS - à placer avant app.Run() et après ConfigurePipeline()
+    app.UseCors("AngularPolicy");
     app.Run();
 }
 catch (Exception ex)

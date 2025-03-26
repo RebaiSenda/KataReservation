@@ -4,7 +4,9 @@ using KataReservation.Domain.Dtos.Services;
 using KataReservation.Domain.Interfaces.Services;
 using Microsoft.AspNetCore.Mvc;
 using static KataReservation.Domain.Services.BookingService;
+
 namespace KataReservation.Api.Controllers;
+
 [Route("api/bookings")]
 [ApiController]
 public class BookingController(IBookingService bookingService, ILogger<BookingController> logger) : ControllerBase
@@ -39,11 +41,11 @@ public class BookingController(IBookingService bookingService, ILogger<BookingCo
                 result.StartSlot,
                 result.EndSlot
             );
-            return CreatedAtAction(nameof(CreateBooking), new { id = result.Id }, response);
+            return CreatedAtAction(nameof(DeleteBooking), new { id = result.Id }, response);
         }
         catch (BookingConflictException ex)
         {
-            logger.LogWarning(ex,"Conflit de réservation détecté: {ErrorMessage}", ex.Message);
+            logger.LogWarning(ex, "Conflit de réservation détecté: {ErrorMessage}", ex.Message);
             return Conflict(new BookingConflictResponse(
                 ex.Message,
                 request.RoomId,
@@ -62,6 +64,44 @@ public class BookingController(IBookingService bookingService, ILogger<BookingCo
             return StatusCode(StatusCodes.Status500InternalServerError, "Une erreur interne est survenue lors de la création de la réservation");
         }
     }
+
+    [HttpGet("{id}")]
+    [EndpointDescription("Obtenir les détails d'une réservation")]
+    [ProducesResponseType(typeof(BookingResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    public async Task<ActionResult<BookingResponse>> GetBooking(int id)
+    {
+        logger.LogInformation("Tentative de récupération de la réservation avec ID {BookingId}", id);
+
+        try
+        {
+            var booking = await bookingService.GetBookingAsync(id);
+
+            if (booking == null)
+            {
+                logger.LogWarning("Réservation non trouvée: ID {BookingId}", id);
+                return NotFound();
+            }
+
+            var response = new BookingResponse(
+                booking.RoomId,
+                booking.PersonId,
+                booking.BookingDate,
+                booking.StartSlot,
+                booking.EndSlot
+            );
+
+            return Ok(response);
+
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "Erreur inattendue lors de la récupération de la réservation avec ID {BookingId}", id);
+            return StatusCode(StatusCodes.Status500InternalServerError, "Une erreur interne est survenue lors de la récupération de la réservation");
+        }
+    }
+
     [HttpDelete("{id}")]
     [EndpointDescription("Supprimer une réservation")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]

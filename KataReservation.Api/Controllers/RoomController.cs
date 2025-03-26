@@ -1,4 +1,5 @@
-﻿using KataReservation.Domain.Dtos.Repositories;
+﻿using KataReservation.Api.Dtos.Requests;
+using KataReservation.Domain.Dtos.Repositories;
 using KataReservation.Domain.Interfaces.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -16,7 +17,7 @@ public class RoomController(IRoomService RoomService, ILogger<RoomController> lo
     [Produces("application/json")]
     [ProducesResponseType(typeof(RoomsResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    [Authorize]
+    //[Authorize]
     public async Task<ActionResult<RoomsResponse>> GetRoomsAsync()
     {
         logger.Log(LogLevel.Information, "Get Room called");

@@ -3,12 +3,11 @@ using Microsoft.Extensions.Logging;
 using NFluent;
 using KataReservation.Api.Controllers;
 using KataReservation.Domain.Interfaces.Services;
-using KataReservation.Domain.Dtos.Repositories;
-using KataReservation.Domain.Dtos.Services;
 using Moq;
 using RoomDto = KataReservation.Domain.Dtos.Services.RoomServiceDto;
 using Room = KataReservation.Domain.Models.Room;
 using ApiRoomsResponse = KataReservation.Api.Dtos.Responses.RoomsResponse;
+using KataReservation.Api.Dtos.Requests;
 namespace KataReservation.Tests.Api.Controllers;
 
 public class RoomControllerTests
@@ -65,7 +64,6 @@ public class RoomControllerTests
     public async Task UpdateRoomAsync_WithNonExistingId_ReturnsNotFound()
     {
         var request = new UpdateRoomRequest ("Updated Room" );
-        //_mockRoomService.Setup(s => s.UpdateRoomAsync(999, request.RoomName)).ReturnsAsync((RoomServiceDto)null);
         _mockRoomService.Setup(s => s.UpdateRoomAsync(999, request.RoomName))
     .ReturnsAsync((RoomDto)null!);
         var result = await _controller.UpdateRoomAsync(999, request);

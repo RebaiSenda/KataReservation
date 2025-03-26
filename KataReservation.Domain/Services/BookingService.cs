@@ -33,7 +33,27 @@ public class BookingService(IBookingRepository bookingRepository) : IBookingServ
             );
         }
     }
+    public async Task<BookingServiceDto?> GetBookingAsync(int bookingId)
+    {
+        // Call the repository method to get the booking
+        var booking = await bookingRepository.GetBookingByIdAsync(bookingId);
 
+        // If no booking is found, return null
+        if (booking == null)
+        {
+            return null;
+        }
+
+        // Map the repository DTO to service DTO
+        return new BookingServiceDto(
+            booking.Id,
+            booking.RoomId,
+            booking.PersonId,
+            booking.BookingDate,
+            booking.StartSlot,
+            booking.EndSlot
+        );
+    }
     private async Task<List<SlotDto>> GetAvailableSlotsForDay(int roomId, DateTime date)
     {
         // Récupérer toutes les réservations pour cette salle et cette date
