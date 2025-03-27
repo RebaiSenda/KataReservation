@@ -1,5 +1,6 @@
 ﻿using KataReservation.Domain.Dtos.Repositories;
 using KataReservation.Domain.Dtos.Services;
+using KataReservation.Domain.Exceptions;
 using KataReservation.Domain.Interfaces.Repositories;
 using KataReservation.Domain.Interfaces.Services;
 
@@ -140,17 +141,6 @@ public class BookingService(IBookingRepository bookingRepository) : IBookingServ
         if (conflictingBookings.Any())
         {
             throw new InvalidOperationException("Ce créneau horaire est déjà réservé pour cette salle.");
-        }
-    }
-
-    public class BookingConflictException : Exception
-    {
-        public List<SlotDto> AvailableSlots { get; }
-
-        public BookingConflictException(string message, List<SlotDto> availableSlots)
-            : base(message)
-        {
-            AvailableSlots = availableSlots;
         }
     }
 }

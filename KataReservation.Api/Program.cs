@@ -17,7 +17,7 @@ try
     {
         options.AddPolicy("AllowAngularApp", policy =>
         {
-            policy.WithOrigins("*")
+            policy.WithOrigins("https://localhost:4200")
                   .AllowAnyHeader()
                   .AllowAnyMethod();
         });

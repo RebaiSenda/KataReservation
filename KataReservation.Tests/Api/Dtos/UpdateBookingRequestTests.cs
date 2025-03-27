@@ -4,7 +4,7 @@ using KataReservation.Api.Dtos.Requests;
 
 namespace KataReservation.Tests.Api.Dtos;
 
-public class CreateValueRequestTests
+public class UpdateBookingRequestTests
 {
     [Fact]
     public void Should_Valid_Request()
@@ -19,6 +19,5 @@ public class CreateValueRequestTests
         Check.That(errors).HasSize(0);
     }
 
-
-    private static CreateBookingRequest CreateValidRequest() => new(1,1,DateTime.Now,1,1);
+    private static UpdateBookingRequest CreateValidRequest() => new(11,1,DateTime.Now,2,1);
 }

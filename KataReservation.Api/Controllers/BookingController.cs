@@ -1,9 +1,9 @@
 ﻿using KataReservation.Api.Dtos.Requests;
 using KataReservation.Api.Dtos.Responses;
 using KataReservation.Domain.Dtos.Services;
+using KataReservation.Domain.Exceptions;
 using KataReservation.Domain.Interfaces.Services;
 using Microsoft.AspNetCore.Mvc;
-using static KataReservation.Domain.Services.BookingService;
 
 namespace KataReservation.Api.Controllers;
 
@@ -50,7 +50,7 @@ public class BookingController(IBookingService bookingService, ILogger<BookingCo
                 ex.Message,
                 request.RoomId,
                 request.BookingDate,
-                ex.AvailableSlots
+                ex.AvailableSlots// Conversion directe de IEnumerable à List
             ));
         }
         catch (InvalidOperationException ex)

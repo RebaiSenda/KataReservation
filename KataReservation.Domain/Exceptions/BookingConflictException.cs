@@ -1,20 +1,16 @@
-﻿namespace KataReservation.Domain.Exceptions
-{
-    public class BookingConflictException : InvalidOperationException
-    {
-        public BookingConflictException()
-            : base("Un conflit a été détecté sur ce créneau horaire.")
-        {
-        }
+﻿using KataReservation.Domain.Dtos.Services;
 
-        public BookingConflictException(string message)
+namespace KataReservation.Domain.Exceptions
+{
+
+    public class BookingConflictException : Exception
+    {
+        public List<SlotDto> AvailableSlots { get; }
+
+        public BookingConflictException(string message, List<SlotDto> availableSlots)
             : base(message)
         {
-        }
-
-        public BookingConflictException(string message, Exception innerException)
-            : base(message, innerException)
-        {
+            AvailableSlots = availableSlots;
         }
     }
 }

@@ -2,5 +2,9 @@
 
 namespace KataReservation.Api.Dtos.Requests
 {
-    public record CreateRoomRequest([Required] string RoomName);
+    public record CreateRoomRequest(
+        [Required]
+    [StringLength(50, MinimumLength = 2)]
+    string RoomName
+    );
 }
