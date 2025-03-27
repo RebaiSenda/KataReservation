@@ -54,7 +54,7 @@ public class BookingService(IBookingRepository bookingRepository) : IBookingServ
             booking.EndSlot
         );
     }
-    private async Task<List<SlotDto>> GetAvailableSlotsForDay(int roomId, DateTime date)
+    public async Task<List<SlotDto>> GetAvailableSlotsForDay(int roomId, DateTime date)
     {
         // Récupérer toutes les réservations pour cette salle et cette date
         var existingBookings = await bookingRepository.GetBookingsByRoomAndDateAsync(roomId, date);

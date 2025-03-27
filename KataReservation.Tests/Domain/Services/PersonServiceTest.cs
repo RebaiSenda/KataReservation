@@ -63,7 +63,7 @@ namespace KataReservation.Tests.Domain.Services
         public async Task GetPersonByIdAsync_WithInvalidId_ShouldReturnNull()
         {
             _mockPersonRepository.Setup(repo => repo.GetPersonByIdAsync(999))
-                .ReturnsAsync((PersonRepositoryDto)null!);
+                .ReturnsAsync((PersonRepositoryDto?)null);
 
             var result = await _personService.GetPersonByIdAsync(999);
 
@@ -105,7 +105,7 @@ namespace KataReservation.Tests.Domain.Services
         public async Task UpdatePersonAsync_WithInvalidId_ShouldReturnNull()
         {
             _mockPersonRepository.Setup(repo => repo.UpdatePersonAsync(999, "John", "Doe"))
-                .ReturnsAsync((PersonRepositoryDto)null!);
+                .ReturnsAsync((PersonRepositoryDto?)null);
 
             var result = await _personService.UpdatePersonAsync(999, "John", "Doe");
 

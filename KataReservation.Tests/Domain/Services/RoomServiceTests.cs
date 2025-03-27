@@ -28,7 +28,7 @@ public class RoomServiceTests
     [Fact]
     public async Task GetRoomsAsync_ReturnsAllRooms()
     {
-        var roomDtos = new List<RoomRepositoryDto>
+        var roomDtos = new List<RoomRepositoryDto?>
             {
                 new RoomRepositoryDto(1, "Room 1"),
                 new RoomRepositoryDto(2, "Room 2")
@@ -62,7 +62,7 @@ public class RoomServiceTests
     [Fact]
     public async Task GetRoomByIdAsync_WithNonExistingId_ReturnsNull()
     {
-        _mockRoomRepository.Setup(r => r.GetRoomByIdAsync(999)).ReturnsAsync((RoomRepositoryDto)null!);
+        _mockRoomRepository.Setup(r => r.GetRoomByIdAsync(999)).ReturnsAsync((RoomRepositoryDto?)null);
 
         var result = await _service.GetRoomByIdAsync(999);
         Assert.Null(result);
@@ -97,7 +97,7 @@ public class RoomServiceTests
     [Fact]
     public async Task UpdateRoomAsync_WithNonExistingId_ReturnsNull()
     {
-        _mockRoomRepository.Setup(r => r.UpdateRoomAsync(999, "Updated Room")).ReturnsAsync((RoomRepositoryDto)null!);
+        _mockRoomRepository.Setup(r => r.UpdateRoomAsync(999, "Updated Room")).ReturnsAsync((RoomRepositoryDto?)null);
 
         var result = await _service.UpdateRoomAsync(999, "Updated Room");
 

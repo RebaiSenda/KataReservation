@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Person, CreatePersonRequest, UpdatePersonRequest } from '../models/person.model';
+import { Person } from '../models/person';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PersonService {
-  private apiUrl = '/api/persons';
+  private apiUrl = 'https://localhost:5002/api/persons';
 
   constructor(private http: HttpClient) { }
 
@@ -19,12 +19,12 @@ export class PersonService {
     return this.http.get<Person>(`${this.apiUrl}/${id}`);
   }
 
-  createPerson(request: CreatePersonRequest): Observable<Person> {
-    return this.http.post<Person>(this.apiUrl, request);
+  createPerson(person: Person): Observable<Person> {
+    return this.http.post<Person>(this.apiUrl, person);
   }
 
-  updatePerson(id: number, request: UpdatePersonRequest): Observable<Person> {
-    return this.http.put<Person>(`${this.apiUrl}/${id}`, request);
+  updatePerson(person: Person): Observable<Person> {
+    return this.http.put<Person>(`${this.apiUrl}/${person.id}`, person);
   }
 
   deletePerson(id: number): Observable<void> {

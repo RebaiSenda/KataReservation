@@ -13,7 +13,7 @@ public class RoomService(IRoomRepository roomRepository) : IRoomService
         var rooms = roomsDtos.Select(v => new Room(v.Id, v.RoomName));
         return rooms.Select(v => new RoomServiceDto(v));
     }
-    public async Task<RoomServiceDto> GetRoomByIdAsync(int id)
+    public async Task<RoomServiceDto?> GetRoomByIdAsync(int id)
     {
         var roomDto = await roomRepository.GetRoomByIdAsync(id);
         if (roomDto == null)
@@ -31,7 +31,7 @@ public class RoomService(IRoomRepository roomRepository) : IRoomService
         return new RoomServiceDto(room);
     }
 
-    public async Task<RoomServiceDto> UpdateRoomAsync(int id, string roomName)
+    public async Task<RoomServiceDto?> UpdateRoomAsync(int id, string roomName)
     {
         var updatedRoomDto = await roomRepository.UpdateRoomAsync(id, roomName);
         if (updatedRoomDto == null)

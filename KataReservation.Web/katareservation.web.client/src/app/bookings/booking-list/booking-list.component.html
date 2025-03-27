@@ -1,0 +1,43 @@
+<div class="container">
+    <h2>Bookings</h2>
+    <button mat-raised-button color="primary" (click)="openBookingForm()">Create Booking</button>
+    
+    <table mat-table [dataSource]="bookings" class="mat-elevation-z8">
+      <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef> ID </th>
+        <td mat-cell *matCellDef="let booking"> {{booking.id}} </td>
+      </ng-container>
+      
+      <ng-container matColumnDef="room">
+        <th mat-header-cell *matHeaderCellDef> Room </th>
+        <td mat-cell *matCellDef="let booking"> {{booking.room?.roomName}} </td>
+      </ng-container>
+      
+      <ng-container matColumnDef="person">
+        <th mat-header-cell *matHeaderCellDef> Person </th>
+        <td mat-cell *matCellDef="let booking"> {{booking.person?.firstName}} {{booking.person?.lastName}} </td>
+      </ng-container>
+      
+      <ng-container matColumnDef="date">
+        <th mat-header-cell *matHeaderCellDef> Date </th>
+        <td mat-cell *matCellDef="let booking"> {{booking.bookingDate | date:'yyyy-MM-dd'}} </td>
+      </ng-container>
+      
+      <ng-container matColumnDef="timeSlot">
+        <th mat-header-cell *matHeaderCellDef> Time Slot </th>
+        <td mat-cell *matCellDef="let booking"> {{formatTimeSlot(booking.startSlot, booking.endSlot)}} </td>
+      </ng-container>
+      
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef> Actions </th>
+        <td mat-cell *matCellDef="let booking">
+          <button mat-icon-button color="warn" (click)="deleteBooking(booking.id)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+      
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+  </div>

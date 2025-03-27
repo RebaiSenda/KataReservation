@@ -63,7 +63,7 @@ namespace KataReservation.Tests.Api.Controllers
         public async Task GetPersonByIdAsync_WithInvalidId_ShouldReturnNotFound()
         {
             _mockPersonService.Setup(service => service.GetPersonByIdAsync(999))
-                .ReturnsAsync((PersonServiceDto)null!);
+                .ReturnsAsync((PersonServiceDto?)null);
 
             var result = await _controller.GetPersonByIdAsync(999);
 
@@ -114,7 +114,7 @@ namespace KataReservation.Tests.Api.Controllers
             var request = new UpdatePersonRequest { FirstName = "John", LastName = "Doe" };
 
             _mockPersonService.Setup(service => service.UpdatePersonAsync(999, "John", "Doe"))
-                .ReturnsAsync((PersonServiceDto)null!);
+                .ReturnsAsync((PersonServiceDto?)null);
 
             var result = await _controller.UpdatePersonAsync(999, request);
 

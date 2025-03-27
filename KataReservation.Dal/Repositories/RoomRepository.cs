@@ -9,13 +9,13 @@ namespace KataReservation.Dal.Repositories;
 public class RoomRepository(KataReservationContext kataReservation) : IRoomRepository 
 {
 
-    public async Task<IEnumerable<RoomRepositoryDto>> GetRoomsAsync()
+    public async Task<IEnumerable<RoomRepositoryDto?>> GetRoomsAsync()
     {
         
         var values = await kataReservation.Rooms.ToListAsync();
         return values.Select(v => new RoomRepositoryDto(v.Id, v.RoomName));
     }
-    public async Task<RoomRepositoryDto> GetRoomByIdAsync(int id)
+    public async Task<RoomRepositoryDto?> GetRoomByIdAsync(int id)
     {
 
         var room = await kataReservation.Rooms.FirstOrDefaultAsync(r => r.Id == id);
@@ -38,7 +38,7 @@ public class RoomRepository(KataReservationContext kataReservation) : IRoomRepos
         return new RoomRepositoryDto(roomEntity.Id, roomEntity.RoomName);
     }
 
-    public async Task<RoomRepositoryDto> UpdateRoomAsync(int id, string roomName)
+    public async Task<RoomRepositoryDto?> UpdateRoomAsync(int id, string roomName)
     {
         var roomEntity = await kataReservation.Rooms.FirstOrDefaultAsync(r => r.Id == id);
         if (roomEntity == null)

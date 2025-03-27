@@ -14,6 +14,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KataReservation.Tests", "Ka
 		{48E6B68E-EF2E-4848-A36B-3EFF11BE03B5} = {48E6B68E-EF2E-4848-A36B-3EFF11BE03B5}
 	EndProjectSection
 EndProject
+Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "katareservation.web.client", "KataReservation.Web\katareservation.web.client\katareservation.web.client.esproj", "{ACEEBC1E-FD61-DEE8-82E1-A94888A343D9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KataReservation.Web.Server", "KataReservation.Web\KataReservation.Web.Server\KataReservation.Web.Server.csproj", "{31536217-E53B-4AC9-A536-AE4AF366EAFD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,6 +40,16 @@ Global
 		{5DAB961D-E07D-4DEB-84D9-C4913DE2362D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5DAB961D-E07D-4DEB-84D9-C4913DE2362D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5DAB961D-E07D-4DEB-84D9-C4913DE2362D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ACEEBC1E-FD61-DEE8-82E1-A94888A343D9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ACEEBC1E-FD61-DEE8-82E1-A94888A343D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ACEEBC1E-FD61-DEE8-82E1-A94888A343D9}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{ACEEBC1E-FD61-DEE8-82E1-A94888A343D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ACEEBC1E-FD61-DEE8-82E1-A94888A343D9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ACEEBC1E-FD61-DEE8-82E1-A94888A343D9}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{31536217-E53B-4AC9-A536-AE4AF366EAFD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{31536217-E53B-4AC9-A536-AE4AF366EAFD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{31536217-E53B-4AC9-A536-AE4AF366EAFD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{31536217-E53B-4AC9-A536-AE4AF366EAFD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -54,7 +54,7 @@ public class RoomControllerTests
     [Fact]
     public async Task GetRoomByIdAsync_WithNonExistingId_ReturnsNotFound()
     {
-        _mockRoomService.Setup(s => s.GetRoomByIdAsync(999)).ReturnsAsync((RoomDto)null!);
+        _mockRoomService.Setup(s => s.GetRoomByIdAsync(999)).ReturnsAsync((RoomDto?)null);
 
         var result = await _controller.GetRoomByIdAsync(999);
 
@@ -65,7 +65,7 @@ public class RoomControllerTests
     {
         var request = new UpdateRoomRequest ("Updated Room" );
         _mockRoomService.Setup(s => s.UpdateRoomAsync(999, request.RoomName))
-    .ReturnsAsync((RoomDto)null!);
+    .ReturnsAsync((RoomDto?)null);
         var result = await _controller.UpdateRoomAsync(999, request);
 
         Assert.IsType<NotFoundResult>(result.Result);

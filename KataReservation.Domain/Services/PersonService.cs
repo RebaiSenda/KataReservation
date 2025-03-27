@@ -18,7 +18,7 @@ namespace KataReservation.Domain.Services
             return persons.Select(p => new PersonServiceDto(new Person(p.Id, p.FirstName, p.LastName)));
         }
 
-        public async Task<PersonServiceDto> GetPersonByIdAsync(int id)
+        public async Task<PersonServiceDto?> GetPersonByIdAsync(int id)
         {
             var person = await personRepository.GetPersonByIdAsync(id);
             if (person == null)
@@ -34,7 +34,7 @@ namespace KataReservation.Domain.Services
             return new PersonServiceDto(new Person(person.Id, person.FirstName, person.LastName));
         }
 
-        public async Task<PersonServiceDto> UpdatePersonAsync(int id, string firstName, string lastName)
+        public async Task<PersonServiceDto?> UpdatePersonAsync(int id, string firstName, string lastName)
         {
             var person = await personRepository.UpdatePersonAsync(id, firstName, lastName);
             if (person == null)
