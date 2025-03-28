@@ -1,9 +1,8 @@
-export interface Person {
+import Booking from "./booking";
+
+export default interface Person {
     id: number;
     firstName: string;
     lastName: string;
-  }
-  export interface CreatePersonRequest {
-    name: string;
-    email: string;
-  }
+    bookings: Booking[];
+}

@@ -1,53 +1,18 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { map, Observable } from 'rxjs';
-import { Person } from '../models/person';
-import { environment } from '../../environments/environment';
+import { HttpClient } from "@angular/common/http";
+import { Injectable } from "@angular/core";
+import Person from "../models/person";
 
-@Injectable({
-  providedIn: 'root'
-})
-export class PersonService {
+@Injectable({ providedIn: "root" })
+export default class AppPersonService {
+    constructor(private readonly http: HttpClient) { }
 
-  constructor(private http: HttpClient) { }
+    add = (user: Person) => this.http.post<number>("api/persons", user);
 
-  getPersons(): Observable<Person[]> {
-    var response = this.http.get<Person[]>(environment.apiUrl);
+    delete = (id: number) => this.http.delete(`api/persons/${id}`);
 
-        return this.ToPersonModel(response);
-  }
-  // Implementation of ToPersonModel function
- ToPersonModel(response: Observable<any[]>): Observable<Person[]> {
-    return response.pipe(
-      map(data => data.map(item => ({
-        id: item.id || 0,
-        firstName: this.(item.name || item.firstName || ''),
-        lastName: this.extractLastName(item.name || item.lastName || '')
-      })))
-    );
-  }
-  private extractFirstName(fullName: string): string {
-    return fullName.split(' ')[0] || '';
-  }
+    get = (id: number) => this.http.get<Person>(`api/persons/${id}`);
 
-  // Helper method to extract last name
-  private extractLastName(fullName: string): string {
-    const nameParts = fullName.split(' ');
-    return nameParts.length > 1 ? nameParts.slice(1).join(' ') : '';
-  }
-  getPerson(id: number): Observable<Person> {
-    return this.http.get<Person>(`${environment.apiUrl}/${id}`);
-  }
+    list = () => this.http.get<Person[]>("api/persons");
 
-  createPerson(person: Person): Observable<Person> {
-    return this.http.post<Person>(environment.apiUrl, person);
-  }
-
-  updatePerson(person: Person): Observable<Person> {
-    return this.http.put<Person>(`${environment.apiUrl}/${person.id}`, person);
-  }
-
-  deletePerson(id: number): Observable<void> {
-    return this.http.delete<void>(`${environment.apiUrl}/${id}`);
-  }
+    update = (p: Person) => this.http.put(`api/persons/${p.id}`, p);
 }

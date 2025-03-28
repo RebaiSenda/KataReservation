@@ -1,8 +1,7 @@
-export interface Room {
-    id: number;
-    roomName: string;
-  }
-  export interface CreateRoomRequest {
-    name: string;
-    capacity: number;
-  }
+import Booking from "./booking";
+
+export default interface Room {
+    Id: number;
+    RoomName: string;
+    Bookings: Booking[];
+}

@@ -1,30 +1,20 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { Booking } from '../models/booking';
-import { environment } from '../../environments/environment';
+import { HttpClient } from "@angular/common/http";
+import { Injectable } from "@angular/core";
+import Booking from "../models/booking";
 
+@Injectable({ providedIn: "root" })
+export default class AppBookingService {
+    constructor(private readonly http: HttpClient) { }
 
-@Injectable({
-  providedIn: 'root'
-})
-export class BookingService {
+    add = (b: Booking) => this.http.post<number>("api/bookings", b);
 
-  constructor(private http: HttpClient) { }
+    delete = (id: number) => this.http.delete(`api/bookings/${id}`);
 
-  getBookings(): Observable<Booking[]> {
-    return this.http.get<Booking[]>(environment.apiUrl);
-  }
+    get = (id: number) => this.http.get<Booking>(`api/bookings/${id}`);
 
-  getBooking(id: number): Observable<Booking> {
-    return this.http.get<Booking>(`${environment.apiUrl}/${id}`);
-  }
+    inactivate = (id: number) => this.http.patch(`api/bookings/${id}/inactivate`, {});
 
-  createBooking(booking: Booking): Observable<Booking> {
-    return this.http.post<Booking>(environment.apiUrl, booking);
-  }
+    list = () => this.http.get<Booking[]>("api/bookings");
 
-  deleteBooking(id: number): Observable<void> {
-    return this.http.delete<void>(`${environment.apiUrl}/${id}`);
-  }
+    update = (r: Booking) => this.http.put(`api/bookings/${r.Id}`, r);
 }
