@@ -12,7 +12,8 @@ Log.Information("Starting up");
 try
 {
     var builder = WebApplication.CreateBuilder(args);
-    // Add service
+
+    // Add CORS policy
     builder.Services.AddCors(options =>
     {
         options.AddPolicy("AllowAngularApp", policy =>
@@ -22,7 +23,8 @@ try
                   .AllowAnyMethod();
         });
     });
-    //Ajoutez le contexte de la base de données
+
+    // Ajoutez le contexte de la base de données
     builder.Services.AddDbContext<KataReservationContext>(options =>
         options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
@@ -34,8 +36,9 @@ try
     var app = builder
         .ConfigureServices()
         .ConfigurePipeline();
-    // Activation de CORS - à placer avant app.Run() et après ConfigurePipeline()
-    app.UseCors("AngularPolicy");
+
+    // Activation de CORS
+    app.UseCors("AllowAngularApp"); // Utilisez le même nom que celui défini ci-dessus
     app.Run();
 }
 catch (Exception ex)

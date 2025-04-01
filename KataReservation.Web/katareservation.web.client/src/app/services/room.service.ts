@@ -1,20 +1,31 @@
+// File: src/app/services/room.service.ts
+
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import Room from "../models/room";
+import { environment } from '../../environments/environment'; 
 
 @Injectable({ providedIn: "root" })
 export default class AppRoomService {
+    private apiUrl = `${environment.apiUrl}/remote/rooms`; 
+
     constructor(private readonly http: HttpClient) { }
 
-    add = (user: Room) => this.http.post<number>("api/rooms", user);
+    // Create a new room
+    add = (room: Room) => this.http.post<Room>(this.apiUrl, { roomName: room.RoomName });
 
-    delete = (id: number) => this.http.delete(`api/rooms/${id}`);
+    // Delete a room by ID
+    delete = (id: number) => this.http.delete(`${this.apiUrl}/${id}`);
 
-    get = (id: number) => this.http.get<Room>(`api/rooms/${id}`);
+    // Get a room by ID
+    get = (id: number) => this.http.get<Room>(`${this.apiUrl}/${id}`);
 
-    inactivate = (id: number) => this.http.patch(`api/rooms/${id}/inactivate`, {});
+    // Inactivate a room (if this is a specific action you need)
+    inactivate = (id: number) => this.http.patch(`${this.apiUrl}/${id}/inactivate`, {});
 
-    list = () => this.http.get<Room[]>("api/rooms");
+    // List all rooms
+    list = () => this.http.get<Room[]>(this.apiUrl);
 
-    update = (r: Room) => this.http.put(`api/rooms/${r.Id}`, r);
+    // Update a room by ID
+    update = (id: number, room: Room) => this.http.put<Room>(`${this.apiUrl}/${id}`, { roomName: room.RoomName });
 }
