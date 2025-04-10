@@ -29,16 +29,6 @@ internal static class HostingExtensions
         {
             options.AddDocumentTransformer<BearerSecuritySchemeTransformer>();
         });
-        builder.Services.AddCors(options =>
-        {
-            options.AddPolicy("AllowAngularApp", policy =>
-            {
-                policy.WithOrigins("https://localhost:4200")
-                      .AllowAnyHeader()
-                      .AllowAnyMethod()
-                      .AllowCredentials();  // Si vous utilisez des cookies ou l'authentification
-            });
-        });
 
         builder.Services.AddScoped<IBookingService, BookingService>();
         builder.Services.AddScoped<IBookingRepository, BookingRepository>();
@@ -65,7 +55,6 @@ internal static class HostingExtensions
         app.UseAuthentication();
         app.UseAuthorization();
         app.MapControllers();
-        app.UseCors("AllowAngularApp");
         return app;
     }
 }

@@ -76,7 +76,6 @@ namespace KataReservation.Api.Controllers
             }
             return Ok(new PersonResponse(updatedPerson));
         }
-
         [HttpDelete("{id}")]
         [EndpointDescription("Supprimer une personne")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]

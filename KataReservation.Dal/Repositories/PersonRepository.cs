@@ -45,15 +45,27 @@ public class PersonRepository(KataReservationContext kataReservation) : IPersonR
         await kataReservation.SaveChangesAsync();
         return new PersonRepositoryDto(personEntity.Id, personEntity.FirstName, personEntity.LastName);
     }
-
     public async Task<bool> DeletePersonAsync(int id)
     {
-        var personEntity = await kataReservation.People.FirstOrDefaultAsync(p => p.Id == id);
+        // Fetch the person along with related bookings
+        var personEntity = await kataReservation.People
+            .Include(p => p.Bookings) // Include related bookings
+            .FirstOrDefaultAsync(p => p.Id == id);
+
         if (personEntity == null)
         {
-            return false;
+            return false; // Person not found
         }
+
+        // Remove related bookings
+        if (personEntity.Bookings.Any())
+        {
+            kataReservation.Bookings.RemoveRange(personEntity.Bookings);
+        }
+
+        // Now remove the person
         kataReservation.People.Remove(personEntity);
+
         await kataReservation.SaveChangesAsync();
         return true;
     }
