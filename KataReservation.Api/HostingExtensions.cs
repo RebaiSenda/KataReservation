@@ -1,8 +1,10 @@
-﻿using KataReservation.Api.Middlewares;
+﻿using KataReservation.Api.Handlers;
+using KataReservation.Api.Middlewares;
 using KataReservation.Dal.Repositories;
 using KataReservation.Domain.Interfaces.Repositories;
 using KataReservation.Domain.Interfaces.Services;
 using KataReservation.Domain.Services;
+using Refit;
 using Scalar.AspNetCore;
 
 namespace KataReservation.Api;
@@ -19,12 +21,11 @@ internal static class HostingExtensions
                options.TokenValidationParameters.ValidateAudience = false;
            });
 
-        //builder.Services.AddAuthorization();
-        //builder.Services.AddAuthorizationBuilder()
-        //    .AddPolicy("KataReservationApiPolicy", policy =>
-        //    {
-        //        policy.RequireClaim("scope", "KataReservation.Api");
-        //    });
+        builder.Services.AddAuthorizationBuilder()
+            .AddPolicy("KataReservationApiPolicy", policy =>
+            {
+                policy.RequireClaim("scope", "KataReservation.Api");
+            });
         builder.Services.AddOpenApi(options =>
         {
             options.AddDocumentTransformer<BearerSecuritySchemeTransformer>();
@@ -36,6 +37,19 @@ internal static class HostingExtensions
         builder.Services.AddScoped<IRoomService, RoomService>();
         builder.Services.AddScoped<IPersonRepository, PersonRepository>();
         builder.Services.AddScoped<IPersonService, PersonService>();
+        // Ajouter cette ligne avant d'enregistrer SimpleDataService
+        builder.Services.AddHttpContextAccessor();
+        // Configuration de Refit pour appeler KataSimpleAPI
+        builder.Services.AddTransient<AuthTokenHandler>();
+        builder.Services.AddRefitClient<IKataSimpleApiClient>()
+            .ConfigureHttpClient(c =>
+            {
+                c.BaseAddress = new Uri(builder.Configuration["ExternalApis:KataSimpleApi"] ?? "https://localhost:5233");
+            })
+            .AddHttpMessageHandler<AuthTokenHandler>();
+
+        // Ajouter le service qui utilisera le client Refit
+        builder.Services.AddScoped<ISimpleDataService, SimpleDataService>();
 
         return builder.Build();
     }

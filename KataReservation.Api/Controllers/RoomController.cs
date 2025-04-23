@@ -17,7 +17,7 @@ public class RoomController(IRoomService RoomService, ILogger<RoomController> lo
     [Produces("application/json")]
     [ProducesResponseType(typeof(RoomsResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    //[Authorize]
+    [Authorize("KataReservationApiPolicy")]
     public async Task<ActionResult<RoomsResponse>> GetRoomsAsync()
     {
         logger.Log(LogLevel.Information, "Get Room called");
