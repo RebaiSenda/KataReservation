@@ -32,6 +32,7 @@ public class RoomController(IRoomService RoomService, ILogger<RoomController> lo
     [ProducesResponseType(typeof(RoomResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    [Authorize("KataReservationApiPolicy")]
     public async Task<ActionResult<RoomResponse>> GetRoomByIdAsync(int id)
     {
         logger.Log(LogLevel.Information, "Get Room by ID called with ID: {Id}", id);
@@ -50,6 +51,7 @@ public class RoomController(IRoomService RoomService, ILogger<RoomController> lo
     [ProducesResponseType(typeof(RoomResponse), StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    [Authorize("KataReservationApiPolicy")]
     public async Task<ActionResult<RoomResponse>> CreateRoomAsync(CreateRoomRequest request)
     {
         if (!ModelState.IsValid)
@@ -70,6 +72,7 @@ public class RoomController(IRoomService RoomService, ILogger<RoomController> lo
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    [Authorize("KataReservationApiPolicy")]
     public async Task<ActionResult<RoomResponse>> UpdateRoomAsync(int id, UpdateRoomRequest request)
     {
         if (!ModelState.IsValid)
@@ -93,6 +96,7 @@ public class RoomController(IRoomService RoomService, ILogger<RoomController> lo
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    [Authorize("KataReservationApiPolicy")]
     public async Task<ActionResult> DeleteRoomAsync(int id)
     {
         logger.Log(LogLevel.Information, "Delete Room called with ID: {Id}", id);

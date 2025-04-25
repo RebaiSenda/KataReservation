@@ -3,6 +3,7 @@ using KataReservation.Api.Dtos.Responses;
 using KataReservation.Domain.Dtos.Services;
 using KataReservation.Domain.Exceptions;
 using KataReservation.Domain.Interfaces.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace KataReservation.Api.Controllers;
@@ -18,6 +19,7 @@ public class BookingController(IBookingService bookingService, ILogger<BookingCo
     [ProducesResponseType(typeof(BookingConflictResponse), StatusCodes.Status409Conflict)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    [Authorize("KataReservationApiPolicy")]
     public async Task<ActionResult<BookingResponse>> CreateBooking([FromBody] CreateBookingRequest request)
     {
         logger.LogInformation("Tentative de création d'une réservation: PersonId {PersonId}, RoomId {RoomId}, Date {BookingDate}, Créneau {StartSlot}-{EndSlot}",
@@ -70,6 +72,7 @@ public class BookingController(IBookingService bookingService, ILogger<BookingCo
     [ProducesResponseType(typeof(BookingResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    [Authorize("KataReservationApiPolicy")]
     public async Task<ActionResult<BookingResponse>> GetBooking(int id)
     {
         logger.LogInformation("Tentative de récupération de la réservation avec ID {BookingId}", id);
@@ -107,6 +110,7 @@ public class BookingController(IBookingService bookingService, ILogger<BookingCo
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    [Authorize("KataReservationApiPolicy")]
     public async Task<IActionResult> DeleteBooking(int id)
     {
         logger.LogInformation("Tentative de suppression de la réservation avec ID {BookingId}", id);

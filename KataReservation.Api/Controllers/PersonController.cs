@@ -1,6 +1,7 @@
 ﻿using KataReservation.Api.Dtos.Requests;
 using KataReservation.Api.Dtos.Responses;
 using KataReservation.Domain.Interfaces.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace KataReservation.Api.Controllers
@@ -14,6 +15,7 @@ namespace KataReservation.Api.Controllers
         [Produces("application/json")]
         [ProducesResponseType(typeof(PersonsResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [Authorize("KataReservationApiPolicy")]
         public async Task<ActionResult<PersonsResponse>> GetPersonsAsync()
         {
             logger.Log(LogLevel.Information, "Get Persons called");
@@ -27,6 +29,7 @@ namespace KataReservation.Api.Controllers
         [ProducesResponseType(typeof(PersonResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [Authorize("KataReservationApiPolicy")]
         public async Task<ActionResult<PersonResponse>> GetPersonByIdAsync(int id)
         {
             logger.Log(LogLevel.Information, "Get Person by ID called with ID: {Id}", id);
@@ -44,6 +47,7 @@ namespace KataReservation.Api.Controllers
         [ProducesResponseType(typeof(PersonResponse), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [Authorize("KataReservationApiPolicy")]
         public async Task<ActionResult<PersonResponse>> CreatePersonAsync(CreatePersonRequest request)
         {
             if (!ModelState.IsValid)
@@ -62,6 +66,7 @@ namespace KataReservation.Api.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [Authorize("KataReservationApiPolicy")]
         public async Task<ActionResult<PersonResponse>> UpdatePersonAsync(int id, UpdatePersonRequest request)
         {
             if (!ModelState.IsValid)
@@ -81,6 +86,7 @@ namespace KataReservation.Api.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [Authorize("KataReservationApiPolicy")]
         public async Task<ActionResult> DeletePersonAsync(int id)
         {
             logger.Log(LogLevel.Information, "Delete Person called with ID: {Id}", id);
