@@ -4,6 +4,9 @@ using KataReservation.Dal.Repositories;
 using KataReservation.Domain.Interfaces.Repositories;
 using KataReservation.Domain.Interfaces.Services;
 using KataReservation.Domain.Services;
+using Polly;
+using Polly.Extensions.Http;
+using Polly.Timeout;
 using Refit;
 using Scalar.AspNetCore;
 
@@ -13,6 +16,11 @@ internal static class HostingExtensions
 {
     public static WebApplication ConfigureServices(this WebApplicationBuilder builder)
     {
+        var retryPolicy = HttpPolicyExtensions
+            .HandleTransientHttpError()
+            .Or<TimeoutRejectedException>()
+            .RetryAsync(3);
+
         builder.Services.AddControllers(options => options.SuppressAsyncSuffixInActionNames = false);
         builder.Services.AddAuthentication()
            .AddJwtBearer(options =>
@@ -46,7 +54,8 @@ internal static class HostingExtensions
             {
                 c.BaseAddress = new Uri(builder.Configuration["ExternalApis:KataSimpleApi"] ?? "https://localhost:5233");
             })
-            .AddHttpMessageHandler<AuthTokenHandler>();
+            .AddHttpMessageHandler<AuthTokenHandler>()
+            .AddPolicyHandler(retryPolicy);
 
         // Ajouter le service qui utilisera le client Refit
         builder.Services.AddScoped<ISimpleDataService, SimpleDataService>();
