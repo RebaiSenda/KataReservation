@@ -8,6 +8,7 @@
 
   <ItemGroup>
 	<PackageReference Include="Duende.IdentityModel.OidcClient" Version="6.0.1" />
+	<PackageReference Include="Intersoft.Crosslight" Version="6.0.5000.975" />
 	<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="9.0.3" />
 	<PackageReference Include="Microsoft.AspNetCore.Cors" Version="2.3.0" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.2" />
@@ -33,6 +34,7 @@
   <ItemGroup>
     <ProjectReference Include="..\KataReservation.Dal\KataReservation.Dal.csproj" />
     <ProjectReference Include="..\KataReservation.Domain\KataReservation.Domain.csproj" />
+    <ProjectReference Include="..\KataReservation.MessagingService\KataReservation.MessagingService.csproj" />
   </ItemGroup>
 
 </Project>

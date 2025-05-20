@@ -113,10 +113,59 @@ public class BookingService(IBookingRepository bookingRepository) : IBookingServ
     {
         return await bookingRepository.DeleteBookingAsync(bookingId);
     }
+    public async Task<BookingServiceDto?> UpdateBookingAsync(BookingServiceDto booking)
+    {
+        // Vérifier si la réservation existe
+        var existingBooking = await bookingRepository.GetBookingByIdAsync(booking.Id);
+        if (existingBooking == null)
+        {
+            return null; // Retourne null si la réservation n'existe pas
+        }
 
+        try
+        {
+            // Valider la nouvelle réservation (mêmes règles que pour la création)
+            await ValidateBookingAsync(booking);
+
+            // Convertir en DTO pour le repository
+            var repositoryDto = new BookingRepositoryDto(
+                booking.Id,
+                booking.RoomId,
+                booking.PersonId,
+                booking.BookingDate,
+                booking.StartSlot,
+                booking.EndSlot
+            );
+
+            // Mettre à jour la réservation (sans valeur de retour)
+            await bookingRepository.UpdateBookingAsync(repositoryDto);
+
+            // Récupérer la réservation mise à jour
+            var updatedBooking = await bookingRepository.GetBookingByIdAsync(booking.Id);
+
+            // Convertir le résultat en DTO pour le service
+            return new BookingServiceDto(
+                updatedBooking.Id,
+                updatedBooking.RoomId,
+                updatedBooking.PersonId,
+                updatedBooking.BookingDate,
+                updatedBooking.StartSlot,
+                updatedBooking.EndSlot
+            );
+        }
+        catch (InvalidOperationException ex) when (ex.Message.Contains("créneau horaire"))
+        {
+            // Si l'exception est due à un conflit de réservation, récupérer les créneaux disponibles
+            var availableSlots = await GetAvailableSlotsForDay(booking.RoomId, booking.BookingDate);
+            throw new BookingConflictException(
+                "Ce créneau horaire est déjà réservé pour cette salle. Voici les créneaux disponibles pour cette journée.",
+                availableSlots
+            );
+        }
+    }
     private async Task ValidateBookingAsync(BookingServiceDto booking)
     {
-        if (booking.BookingDate.Date < DateTime.Today)
+        if (booking.BookingDate.Date < DateTime.UtcNow.Date)
         {
             throw new InvalidOperationException("La date de réservation doit être une date future.");
         }

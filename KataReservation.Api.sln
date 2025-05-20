@@ -14,6 +14,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KataReservation.Tests", "Ka
 		{48E6B68E-EF2E-4848-A36B-3EFF11BE03B5} = {48E6B68E-EF2E-4848-A36B-3EFF11BE03B5}
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KataReservation.MessagingService", "KataReservation.MessagingService\KataReservation.MessagingService.csproj", "{D72C7044-8184-43FE-9F4B-FCF08184F16C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,6 +38,10 @@ Global
 		{5DAB961D-E07D-4DEB-84D9-C4913DE2362D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5DAB961D-E07D-4DEB-84D9-C4913DE2362D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5DAB961D-E07D-4DEB-84D9-C4913DE2362D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D72C7044-8184-43FE-9F4B-FCF08184F16C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D72C7044-8184-43FE-9F4B-FCF08184F16C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D72C7044-8184-43FE-9F4B-FCF08184F16C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D72C7044-8184-43FE-9F4B-FCF08184F16C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

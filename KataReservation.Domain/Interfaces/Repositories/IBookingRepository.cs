@@ -10,4 +10,6 @@ public interface IBookingRepository
     Task<BookingRepositoryDto?> GetBookingByIdAsync(int bookingId);
     Task<IEnumerable<BookingRepositoryDto>> GetConflictingBookingsAsync(int roomId, DateTime bookingDate, int startSlot, int endSlot);  
     Task<IEnumerable<BookingRepositoryDto>> GetBookingsByRoomAndDateAsync(int roomId, DateTime date);
+    Task UpdateBookingAsync(BookingRepositoryDto repositoryDto);
+    
 }

@@ -73,7 +73,30 @@ public class BookingRepository(KataReservationContext kataReservation) : IBookin
             booking.EndSlot
         );
     }
+    // 2. Implémentation de UpdateBookingAsync dans le BookingRepository
+    public async Task UpdateBookingAsync(BookingRepositoryDto repositoryDto)
+    {
+        // Rechercher la réservation existante
+        var booking = await kataReservation.Bookings.FindAsync(repositoryDto.Id);
 
+        if (booking == null)
+        {
+            throw new InvalidOperationException($"La réservation avec l'ID {repositoryDto.Id} n'existe pas.");
+        }
+
+        // Mettre à jour les propriétés
+        booking.RoomId = repositoryDto.RoomId;
+        booking.PersonId = repositoryDto.PersonId;
+        booking.BookingDate = repositoryDto.BookingDate.Date;
+        booking.StartSlot = repositoryDto.StartSlot;
+        booking.EndSlot = repositoryDto.EndSlot;
+
+        // Marquer l'entité comme modifiée
+        kataReservation.Entry(booking).State = EntityState.Modified;
+
+        // Sauvegarder les changements
+        await kataReservation.SaveChangesAsync();
+    }
     public async Task<IEnumerable<BookingRepositoryDto>> GetConflictingBookingsAsync(int roomId, DateTime bookingDate, int startSlot, int endSlot)
     {
         return await kataReservation.Bookings

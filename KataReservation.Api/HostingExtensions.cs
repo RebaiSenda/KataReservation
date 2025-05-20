@@ -4,6 +4,7 @@ using KataReservation.Dal.Repositories;
 using KataReservation.Domain.Interfaces.Repositories;
 using KataReservation.Domain.Interfaces.Services;
 using KataReservation.Domain.Services;
+using KataReservation.MessagingService.DependencyInjection;
 using Polly;
 using Polly.Extensions.Http;
 using Polly.Timeout;
@@ -59,7 +60,11 @@ internal static class HostingExtensions
 
         // Ajouter le service qui utilisera le client Refit
         builder.Services.AddScoped<ISimpleDataService, SimpleDataService>();
-
+        // Configuration RabbitMQ
+        //builder.Services.Configure<RabbitMQConfig>(builder.Configuration.GetSection("RabbitMQ"));
+        //builder.Services.AddSingleton<IMessagingService, RabbitMQService>();
+        // Utilisation de notre extension pour ajouter les services de messagerie
+        builder.Services.AddMessagingServices(builder.Configuration);
         return builder.Build();
     }
 
