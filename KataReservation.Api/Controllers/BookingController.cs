@@ -15,12 +15,12 @@ namespace KataReservation.Api.Controllers;
 public class BookingController : ControllerBase
 {
     private readonly IBookingService _bookingService;
-    private readonly IMessagePublisher _messagePublisher;
+    private readonly IBookingMessagePublisher _messagePublisher;
     private readonly ILogger<BookingController> _logger;
 
     public BookingController(
         IBookingService bookingService,
-        IMessagePublisher messagePublisher, // Utiliser IMessagePublisher au lieu de IMessagingService
+        IBookingMessagePublisher messagePublisher,
         ILogger<BookingController> logger)
     {
         _bookingService = bookingService;
@@ -62,7 +62,7 @@ public class BookingController : ControllerBase
                 BookingDate = result.BookingDate,
                 StartSlot = result.StartSlot,
                 EndSlot = result.EndSlot,
-                Status = "Created"
+                Status = "created" // ✅ Status en minuscule pour cohérence avec le consumer
             };
 
             // Publier le message à travers RabbitMQ
@@ -174,7 +174,7 @@ public class BookingController : ControllerBase
                 BookingDate = booking.BookingDate,
                 StartSlot = booking.StartSlot,
                 EndSlot = booking.EndSlot,
-                Status = "Deleted"
+                Status = "deleted" // ✅ Status en minuscule pour cohérence avec le consumer
             };
 
             // Publier le message de suppression via RabbitMQ
@@ -232,7 +232,7 @@ public class BookingController : ControllerBase
                 BookingDate = updatedBooking.BookingDate,
                 StartSlot = updatedBooking.StartSlot,
                 EndSlot = updatedBooking.EndSlot,
-                Status = "Updated"
+                Status = "updated" // ✅ Status en minuscule pour cohérence avec le consumer
             };
 
             // Publier le message à travers RabbitMQ

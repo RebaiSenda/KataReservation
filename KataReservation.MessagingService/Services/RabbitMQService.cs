@@ -8,7 +8,7 @@ using System.Text.Json;
 
 namespace KataReservation.MessagingService.Services
 {
-    public class RabbitMQService : IMessagePublisher, IDisposable
+    public class RabbitMQService : IBookingMessagePublisher , IDisposable
     {
         private readonly RabbitMQConfig _config;
         private readonly IConnection _connection;
@@ -94,11 +94,11 @@ namespace KataReservation.MessagingService.Services
             _connection?.Dispose();
         }
 
-        // Implémentation vide de la méthode de l'interface Foundatio.Messaging.IMessagePublisher
+        // Implémentation vide de la méthode de l'interface Foundatio.Messaging.IBookingMessagePublisher 
         public Task PublishAsync<T>(T message)
         {
             // Cette méthode n'est pas utilisée dans votre application, mais est nécessaire
-            // pour satisfaire l'interface Foundatio.Messaging.IMessagePublisher
+            // pour satisfaire l'interface Foundatio.Messaging.IBookingMessagePublisher 
             return Task.CompletedTask;
         }
     }

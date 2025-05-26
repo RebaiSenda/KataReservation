@@ -19,8 +19,8 @@ namespace KataReservation.MessagingService.DependencyInjection
             services.Configure<RabbitMQConfig>(configuration.GetSection("RabbitMQ"));
 
             // Enregistrer le service de messagerie en séparant l'implémentation de l'interface
-            // RabbitMQService est uniquement enregistré comme IMessagePublisher personnalisé
-            services.AddSingleton<IMessagePublisher, RabbitMQService>();
+            // RabbitMQService est uniquement enregistré comme IBookingMessagePublisher  personnalisé
+            services.AddSingleton<IBookingMessagePublisher , RabbitMQService>();
 
             return services;
         }

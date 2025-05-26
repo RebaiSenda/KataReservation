@@ -7,7 +7,7 @@ using KataReservation.MessagingService.Models;
 
 namespace KataReservation.MessagingService.Interfaces
 {
-    public interface IMessagePublisher
+    public interface IBookingMessagePublisher
     {
         Task PublishBookingCreatedAsync(BookingNotificationMessage message);
         Task PublishBookingDeletedAsync(BookingNotificationMessage message);
